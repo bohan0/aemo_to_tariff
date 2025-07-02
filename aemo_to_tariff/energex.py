@@ -77,8 +77,8 @@ tariffs = {
         'name': 'Residential Time of Use Energy',
         'periods': [
             ('Evening', time(16, 0), time(21, 0), 19.367),
-            ('Overnight', time(21, 0), time(9, 0), 4.868),
-            ('Day', time(9, 0), time(16, 0), 0.00476)
+            ('Overnight', time(21, 0), time(11, 0), 4.868),
+            ('Day', time(11, 0), time(16, 0), 0.00476)
         ],
         'rate': {'Evening': 19.367, 'Overnight': 4.868, 'Day': 0.00476}
     },
@@ -113,9 +113,9 @@ tariffs = {
     '6800': {
         'name': 'Small Business ToU Energy',
         'periods': [
-            ('Day', time(9, 0), time(16, 0), 4.356),
+            ('Day', time(11, 0), time(16, 0), 4.356),
             ('Evening', time(16, 0), time(21, 0), 19.219),
-            ('Overnight', time(21, 0), time(9, 0), 14.097)
+            ('Overnight', time(21, 0), time(11, 0), 14.097)
         ],
         'rate': {'Day': 4.356, 'Evening': 19.219, 'Overnight': 14.097}
     },
