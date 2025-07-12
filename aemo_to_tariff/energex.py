@@ -168,6 +168,22 @@ demand_charges = {
     '8300': 15.704,  # Demand Small
 }
 
+def translate_tariff(tariff_code: str):
+    """
+    Translate a tariff code to its canonical form for lookup.
+
+    Parameters:
+    - tariff_code (str): The input tariff code.
+
+    Returns:
+    - str: The canonical tariff code for lookup.
+    """
+    code = str(tariff_code)
+    if len(code) == 4:
+        prefix = code[:2]
+        return prefix + '00'
+    return code
+
 def calculate_demand_fee(tariff_code: str, demand_kw: float, days: int = 30):
     """
     Calculate the demand fee for a given tariff code, demand amount, and time period.
@@ -180,7 +196,7 @@ def calculate_demand_fee(tariff_code: str, demand_kw: float, days: int = 30):
     Returns:
     - float: The demand fee in dollars.
     """
-    tariff_code = str(tariff_code)[:4]
+    tariff_code = translate_tariff(str(tariff_code))
 
     if tariff_code not in demand_charges:
         return 0.0  # Return 0 if the tariff doesn't have a demand charge
@@ -204,6 +220,7 @@ def get_daily_fee(tariff_code: str, annual_usage: float = None):
     Returns:
     - float: The daily fee in dollars.
     """
+    tariff_code = translate_tariff(str(tariff_code))
     fee = daily_fees.get(tariff_code)
 
     if isinstance(fee, dict):
@@ -225,6 +242,7 @@ def get_daily_fee(tariff_code: str, annual_usage: float = None):
 
 
 def get_periods(tariff_code: str):
+    tariff_code = translate_tariff(str(tariff_code))
     tariff = tariffs.get(tariff_code)
     if not tariff:
         raise ValueError(f"Unknown tariff code: {tariff_code}")
@@ -259,6 +277,7 @@ def convert(interval_datetime: datetime, tariff_code: str, rrp: float):
     Returns:
     - float: The price in c/kWh.
     """
+    tariff_code = translate_tariff(str(tariff_code))
     interval_time = interval_datetime.astimezone(ZoneInfo(time_zone())).time()
     rrp_c_kwh = rrp / 10
 
