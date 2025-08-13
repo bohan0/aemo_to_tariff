@@ -46,7 +46,7 @@ daily_fees = {
     },
     '6600': 5.273,  # Large Residential Energy
     '6700': 5.273,  # Large Business Energy
-    '7200': 4.994,  # LV Demand Time-of-Use
+    '7200': 7.665,  # LV Demand Time-of-Use
     '8100': 37.740,  # Demand Large
     '8300': 5.273,  # Demand Small
 }
@@ -136,7 +136,12 @@ tariffs = {
     '7200': {
         'name': 'LV Demand Time-of-Use',
         'periods': [
-            ('Anytime', time(0, 0), time(23, 59), 2.484)
+            ('Off-Peak', time(11, 0), time(13, 0), 0.00476),
+            ('Peak', time(17, 0), time(20, 0), 0.01736),
+            ('Shoulder', time(20, 0), time(23, 59), 0.02611),
+            ('Shoulder', time(0, 0), time(10, 59), 0.02611),
+            ('Shoulder', time(13, 1), time(16, 59), 0.02611),
+            ('Shoulder', time(14, 0), time(16, 59), 0.02611)
         ],
         'rate': 2.484
     },
@@ -148,22 +153,35 @@ tariffs = {
         'rate': 1.301
     },
     '8300': {
-        'name': 'Demand Small',
+        'name': 'SAC Demand Small',
         'periods': [
-            ('Anytime', time(0, 0), time(23, 59), 1.799)
+            ('Anytime', time(0, 0), time(23, 59), 0.01736)
         ],
         'rate': 1.799
-    }
+    },
+    '94300': {
+        'name': 'Large TOU Energy',
+        'periods': [
+            ('Off-Peak', time(11, 0), time(13, 59), 0.00476),
+            ('Peak', time(16, 0), time(20, 59), 0.24736),
+            ('Shoulder', time(21, 0), time(23, 59), 0.20136),
+            ('Shoulder', time(0, 0), time(10, 59), 0.20136)
+        ],
+    },
 }
 
 # Add this to your existing code
 
 demand_charges = {
-    '3700': 8.998,  # Residential Demand
-    '3900': 5.127,  # Residential Transitional Demand
-    '3600': 10.289,  # Small Business Demand
-    '3800': 4.975,  # Small Business Transitional Demand
-    '7200': 15.254,  # LV Demand Time-of-Use (peak) but not excess demand
+    '3700': { 'Peak': 8.998},  # Residential Demand
+    '3900': { 'Peak': 5.127},  # Residential Transitional Demand
+    '3600': { 'Peak': 10.289},  # Small Business Demand
+    '3800': { 'Peak': 4.975},  # Small Business Transitional Demand
+    '7200': {
+        'Off-Peak': 0.000,    # 11:00 to 13:00
+        'Peak': 14.919,       # 17:00 to 20:00
+        'Shoulder': 3.333     # Other times
+    },
     '8100': 15.773,  # Demand Large
     '8300': 15.704,  # Demand Small
 }
@@ -184,7 +202,7 @@ def translate_tariff(tariff_code: str):
         return prefix + '00'
     return code
 
-def calculate_demand_fee(tariff_code: str, demand_kw: float, days: int = 30):
+def calculate_demand_fee(tariff_code: str, demand_kw: float, days: int = 30, tou='peak'):
     """
     Calculate the demand fee for a given tariff code, demand amount, and time period.
 
@@ -201,7 +219,11 @@ def calculate_demand_fee(tariff_code: str, demand_kw: float, days: int = 30):
     if tariff_code not in demand_charges:
         return 0.0  # Return 0 if the tariff doesn't have a demand charge
 
-    charge_per_kw_per_month = demand_charges[tariff_code]
+    charge = demand_charges[tariff_code]
+    if isinstance(charge, dict):
+        charge_per_kw_per_month = charge.get(tou, 0.0)
+    else:
+        charge_per_kw_per_month = charge
 
     # Convert the charge to a daily rate and then calculate for the given number of days
     daily_rate = charge_per_kw_per_month / 30

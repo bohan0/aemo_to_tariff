@@ -46,6 +46,7 @@ class TestTariffConversions(unittest.TestCase):
 
     def test_energex_daily_fee(self):
         self.assertAlmostEqual(get_daily_fee('Energex', '3900'), 0.556, 3)
+        self.assertAlmostEqual(get_daily_fee('Energex', '7200'), 7.665, 3)
         self.assertAlmostEqual(get_daily_fee('Energex', '6000', annual_usage=15000), 0.739, 3)
         self.assertAlmostEqual(get_daily_fee('Energex', '6000', annual_usage=30000), 1.033, 3)
 
