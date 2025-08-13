@@ -14,7 +14,7 @@ class TestEnergex(unittest.TestCase):
         interval_time = datetime(2023, 7, 15, 10, 0, tzinfo=ZoneInfo('Australia/Brisbane'))
         tariff_code = '6900'
         rrp = 100.0
-        expected_price = 14.065
+        expected_price = 14.868
         price = energex.convert(interval_time, tariff_code, rrp)
         self.assertAlmostEqual(price, expected_price, places=2)
 

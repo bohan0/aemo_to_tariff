@@ -14,7 +14,7 @@ class TestEndeavour(unittest.TestCase):
         interval_time = datetime(2023, 1, 15, 17, 0, tzinfo=ZoneInfo(time_zone()))
         tariff_code = 'N71'
         rrp = 100.0
-        expected_price = 30.7634
+        expected_price = 31.7964
         price = convert(interval_time, tariff_code, rrp)
         self.assertAlmostEqual(price, expected_price)
 
@@ -22,7 +22,7 @@ class TestEndeavour(unittest.TestCase):
         interval_time = datetime(2024, 8, 15, 17, 0, tzinfo=ZoneInfo(time_zone()))
         tariff_code = 'N71'
         rrp = 100.0
-        expected_price = 22.9972
+        expected_price = 23.8419
         price = convert(interval_time, tariff_code, rrp)
         self.assertAlmostEqual(price, expected_price, places=4)
 

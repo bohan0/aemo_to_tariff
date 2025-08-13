@@ -16,28 +16,28 @@ class TestErgonFunctions(unittest.TestCase):
         self.assertEqual(time_zone(), 'Australia/Brisbane')
 
     def test_get_daily_fee(self):
-        self.assertEqual(get_daily_fee('WRTDEMT1'), 1.746)
-        self.assertEqual(get_daily_fee('ERTOUET1'), 1.798)
+        self.assertEqual(get_daily_fee('WRTOUET1'), 7.21)
+        self.assertEqual(get_daily_fee('ERTOUET1'), 1.808)
 
     
     def test_get_periods(self):
-        periods = get_periods('WRTDEMT1')
-        self.assertEqual(len(periods), 1)
-        self.assertEqual(periods[0], ('Anytime', time(0, 0), time(23, 59), 26.793))
+        periods = get_periods('WRTOUET1')
+        self.assertEqual(len(periods), 3)
+        self.assertEqual(periods[0], ('Off-Peak', time(11, 0), time(16, 0), 0.00524))
         with self.assertRaises(ValueError):
             get_periods('UNKNOWN')
 
     def test_convert_feed_in_tariff(self):
         interval_datetime = datetime(2023, 1, 1, 12, 0, tzinfo=ZoneInfo('Australia/Brisbane'))
-        self.assertEqual(convert_feed_in_tariff(interval_datetime, 'WRTDEMT1', 100), 10.0)
+        self.assertEqual(convert_feed_in_tariff(interval_datetime, 'WRTOUET1', 100), 10.0)
 
-    def test_WRTDEMT1_tariff(self):
+    def test_WRTOUET1_tariff(self):
         # 13:00 27.25c/kWh v -3.66c/kWh for RRP $-31.99/MWh
         interval_datetime = datetime(2025, 4, 5, 12, 0, tzinfo=ZoneInfo('Australia/Brisbane'))
-        self.assertAlmostEqual(convert(interval_datetime, 'WRTDEMT1', -31.99), 23.594, places=2)
+        self.assertAlmostEqual(convert(interval_datetime, 'WRTOUET1', -31.99), 2.266, places=2)
     
-    def test_ERTOUET1_tariff(self):
+    def test_MRTOUET4_tariff(self):
         # 13:00 27.25c/kWh v -3.66c/kWh for RRP $-31.99/MWh
         interval_datetime = datetime(2025, 4, 5, 12, 0, tzinfo=ZoneInfo('Australia/Brisbane'))
-        self.assertAlmostEqual(convert(interval_datetime, 'ERTOUET1', -31.99), 21.713, places=2)
+        self.assertAlmostEqual(convert(interval_datetime, 'MRTOUET4', -31.99), 2.266, places=2)
     

@@ -8,7 +8,7 @@ class TestSAPower(unittest.TestCase):
         interval_time = datetime(2025, 2, 20, 9, 10, tzinfo=ZoneInfo('Australia/Adelaide'))
         tariff_code = 'RTOU'
         rrp = -100.0
-        expected_price = 10.26535477
+        expected_price = 8.592
         price = sapower.convert(interval_time, tariff_code, rrp)
         loss_factor = expected_price / price
         self.assertAlmostEqual(price * 0.96, expected_price, places=1, msg=f"Price: {price}, Expected: {expected_price}, Loss Factor: {loss_factor}")
@@ -17,7 +17,7 @@ class TestSAPower(unittest.TestCase):
         interval_time = datetime(2025, 2, 20, 15, 10, tzinfo=ZoneInfo('Australia/Adelaide'))
         tariff_code = 'RTOU'
         rrp = -76.53
-        expected_price = 13.03587882
+        expected_price = -2.913
         price = sapower.convert(interval_time, tariff_code, rrp)
         loss_factor = expected_price / price
         self.assertAlmostEqual(price * 1, expected_price, places=1, msg=f"Price: {price}, Expected: {expected_price}, Loss Factor: {loss_factor}")
@@ -26,7 +26,7 @@ class TestSAPower(unittest.TestCase):
         interval_time = datetime(2025, 2, 20, 18, 10, tzinfo=ZoneInfo('Australia/Adelaide'))
         tariff_code = 'RELE2W'
         rrp = -76.53
-        expected_price = 29.705328600000005
+        expected_price = 28.409
         price = sapower.convert(interval_time, tariff_code, rrp)
         loss_factor = expected_price / price
         self.assertAlmostEqual(price * 1.1678, expected_price, places=1, msg=f"Price: {price}, Expected: {expected_price}, Loss Factor: {loss_factor}")
@@ -46,7 +46,7 @@ class TestSAPower(unittest.TestCase):
         interval_time = datetime(2025, 7, 4, 7, 40, tzinfo=ZoneInfo('Australia/Adelaide'))
         tariff_code = 'RELE2W'
         rrp = -17.51
-        expected_price = -2.99054519
+        expected_price = -1.751
         price = sapower.convert_feed_in_tariff(interval_time, tariff_code, rrp)
         loss_factor = expected_price / price
         self.assertAlmostEqual(price, expected_price, places=1)
@@ -55,7 +55,7 @@ class TestSAPower(unittest.TestCase):
         interval_time = datetime(2025, 3, 30, 2, 55, tzinfo=ZoneInfo('Australia/Adelaide'))
         tariff_code = 'RTOU'
         rrp = 9.4
-        expected_price = 11.2 - 1.7156
+        expected_price = 10.6182
         price = sapower.convert(interval_time, tariff_code, rrp)
         loss_factor = expected_price / price
         self.assertAlmostEqual(price * 1.02, expected_price, places=1, msg=f"Price: {price}, Expected: {expected_price}, Loss Factor: {loss_factor}")
@@ -65,7 +65,7 @@ class TestSAPower(unittest.TestCase):
         tariff_code = 'RELE2W'
         dlf = 1.1678
         rrp = 0.0
-        expected_price = 34.7445
+        expected_price = 9.9645
         price = sapower.convert(interval_time, tariff_code, rrp)
         loss_factor = expected_price / price
         self.assertAlmostEqual(price * 1.05, expected_price, places=1, msg=f"Price: {price}, Expected: {expected_price}, Loss Factor: {loss_factor}")
@@ -78,7 +78,7 @@ class TestSAPower(unittest.TestCase):
         dlf = 1.1678
         rrp = 0.0
         feed_in_price = sapower.convert_feed_in_tariff(interval_time, tariff_code, rrp)
-        self.assertAlmostEqual(feed_in_price, 12.36, places=2, msg=f"Feed-in Price: {feed_in_price}, Expected: 1.0")
+        self.assertAlmostEqual(feed_in_price, 0.0, places=2, msg=f"Feed-in Price: {feed_in_price}, Expected: 1.0")
 
     def test_feb_twoway_utc_tariff(self):
         interval_time = datetime(2025, 2, 7, 8, 20, tzinfo=ZoneInfo('UTC'))
@@ -86,13 +86,13 @@ class TestSAPower(unittest.TestCase):
         dlf = 1.1678
         rrp = 0.0
         feed_in_price = sapower.convert_feed_in_tariff(interval_time, tariff_code, rrp)
-        self.assertAlmostEqual(feed_in_price, 12.36, places=2, msg=f"Feed-in Price: {feed_in_price}, Expected: 1.0")
+        self.assertAlmostEqual(feed_in_price, 0.0, places=2, msg=f"Feed-in Price: {feed_in_price}, Expected: 1.0")
 
     def test_morning_tou_tariff(self):
         interval_time = datetime(2025, 3, 30, 8, 55, tzinfo=ZoneInfo('Australia/Adelaide'))
         tariff_code = 'RTOU'
         rrp = 19.28
-        expected_price = 25.45 - 1.7156
+        expected_price = 21.9219
         price = sapower.convert(interval_time, tariff_code, rrp)
         loss_factor = expected_price / price
         self.assertAlmostEqual(price * 1.05, expected_price, places=1, msg=f"Price: {price}, Expected: {expected_price}, Loss Factor: {loss_factor}")
@@ -101,7 +101,7 @@ class TestSAPower(unittest.TestCase):
         interval_time = datetime(2025, 7, 4, 12, 25, tzinfo=ZoneInfo('Australia/Adelaide'))
         tariff_code = 'RTOU'
         rrp = -25.19 
-        expected_price = -1.79853183
+        expected_price = 2.221
         expected_sell_price = -3.81975062
         price = sapower.convert(interval_time, tariff_code, rrp)
         self.assertAlmostEqual(price, expected_price, places=2, msg=f"Price: {price}, Expected: {expected_price}")

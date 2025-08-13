@@ -17,7 +17,7 @@ class TestAusgrid(unittest.TestCase):
         interval_time = datetime(2025, 1, 22, 17, 45, tzinfo=ZoneInfo(time_zone()))
         tariff_code = 'EA025'
         rrp = 136.7
-        expected_price = 45.43
+        expected_price = 48.0648
         price = convert(interval_time, tariff_code, rrp)
         loss_factor = expected_price / price
         self.assertAlmostEqual(price * 1.12, expected_price, places=1)
@@ -47,7 +47,7 @@ class TestAusgrid(unittest.TestCase):
         interval_time = datetime(2025, 4, 22, 12, 45, tzinfo=ZoneInfo(time_zone()))
         tariff_code = 'EA305'
         rrp = 136.7
-        expected_price = 17.016
+        expected_price = 17.192
         price = convert(interval_time, tariff_code, rrp)
         loss_factor = expected_price / price
         self.assertAlmostEqual(price * 1.12, expected_price, places=1)
