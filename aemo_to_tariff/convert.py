@@ -8,6 +8,7 @@ import aemo_to_tariff.sapower as sapower
 import aemo_to_tariff.tasnetworks as tasnetworks
 import aemo_to_tariff.endeavour as endeavour
 import aemo_to_tariff.powercor as powercor
+import aemo_to_tariff.jemena as jemena
 import aemo_to_tariff.essential as essential
 import aemo_to_tariff.victoria as victoria
 import aemo_to_tariff.ausnet as ausnet
@@ -48,6 +49,8 @@ def spot_to_tariff(interval_time, network, tariff, rrp,
         return endeavour.convert(interval_time, tariff, adjusted_rrp)
     elif network == 'powercor':
         return powercor.convert(interval_time, tariff, adjusted_rrp)
+    elif network == 'jemena':
+        return jemena.convert(interval_time, tariff, adjusted_rrp)
     elif network == 'essential':
         return essential.convert(interval_time, tariff, adjusted_rrp)
     elif network == 'victoria':
@@ -98,6 +101,8 @@ def spot_to_feed_in_tariff(interval_time, network, tariff, rrp,
         return endeavour.convert_feed_in_tariff(interval_time, tariff, adjusted_rrp)
     elif network == 'evoenergy':
         return evoenergy.convert_feed_in_tariff(interval_time, tariff, adjusted_rrp)
+    elif network == 'jemena':
+        return jemena.convert_feed_in_tariff(interval_time, tariff, adjusted_rrp)
     elif network == 'powercor':
         return powercor.convert_feed_in_tariff(interval_time, tariff, adjusted_rrp)
     elif network == 'essential':
@@ -142,6 +147,8 @@ def get_daily_fee(network, tariff, annual_usage=None):
         return essential.get_daily_fee(tariff)
     elif network == 'powercor':
         return powercor.get_daily_fee(tariff)
+    elif network == 'jemena':
+        return jemena.get_daily_fee(tariff)
     elif network == 'endeavour':
         return endeavour.get_daily_fee(tariff)
     elif network == 'ausnet':
@@ -220,6 +227,8 @@ def get_periods(network, tariff: str):
         return essential.get_periods(tariff)
     elif network == 'victoria':
         return victoria.get_periods(tariff)
+    elif network == 'jemena':
+        return jemena.get_periods(tariff)
     elif network == 'powercor':
         return powercor.get_periods(tariff)
     elif network == 'ausnet':
