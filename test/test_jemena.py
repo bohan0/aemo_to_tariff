@@ -4,6 +4,8 @@ from datetime import datetime
 from aemo_to_tariff.jemena import time_zone, convert, get_daily_fee
 
 class TestJemena(unittest.TestCase):
+    # peak 3pm: 2025-08-13 15:05:00+10	26.29598	0.00004
+    # night 9pm: 2025-08-12 21:05:00+10	31.49869	19.19978	180.61
     def test_convert(self):
         interval_time = datetime(2023, 7, 15, 10, 0, tzinfo=ZoneInfo(time_zone()))
         tariff_code = 'PRTOU'

@@ -35,29 +35,29 @@ tariffs = {
     'ERTOUET1': {
         'name': 'Residential Battery ToU',
         'periods': [
-            ('Off-Peak', time(11, 0), time(16, 0), 0.00524),
-            ('Peak', time(16, 0), time(21, 0), 0.18564),
-            ('Shoulder', time(21, 0), time(11, 0), 0.04065)
+            ('Off-Peak', time(11, 0), time(16, 0), 0.524),
+            ('Peak', time(16, 0), time(21, 0), 18.564),
+            ('Shoulder', time(21, 0), time(11, 0), 4.065)
         ],
-        'rate': {'Off-Peak': 0.00524, 'Peak': 0.18564, 'Shoulder': 0.04065}
+        'rate': {'Off-Peak': 0.524, 'Peak': 18.564, 'Shoulder': 4.065}
     },
     'WRTOUET1': {
         'name': 'Residential Wide ToU',
         'periods': [
-            ('Off-Peak', time(11, 0), time(16, 0), 0.00524),
-            ('Peak', time(16, 0), time(21, 0), 0.18564),
-            ('Shoulder', time(21, 0), time(11, 0), 0.04065)
+            ('Off-Peak', time(11, 0), time(16, 0), 0.524),
+            ('Peak', time(16, 0), time(21, 0), 18.564),
+            ('Shoulder', time(21, 0), time(11, 0), 4.065)
         ],
-        'rate': {'Off-Peak': 0.00524, 'Peak': 0.18564, 'Shoulder': 0.04065}
+        'rate': {'Off-Peak': 0.524, 'Peak': 18.564, 'Shoulder': 4.065}
     },
     'MRTOUET4': {
         'name': 'Residential Multi ToU',
         'periods': [
-            ('Off-Peak', time(11, 0), time(16, 0), 0.00524),
+            ('Off-Peak', time(11, 0), time(16, 0), 0.524),
             ('Peak', time(16, 0), time(21, 0), 0.17671),
             ('Shoulder', time(21, 0), time(11, 0), 0.03172)
         ],
-        'rate': {'Off-Peak': 0.00524, 'Peak': 0.17671, 'Shoulder': 0.03172}
+        'rate': {'Off-Peak': 0.524, 'Peak': 0.17671, 'Shoulder': 0.03172}
     },
     '6900': {
         'name': 'Residential Time of Use Energy',
@@ -199,11 +199,9 @@ def convert(interval_datetime: datetime, tariff_code: str, rrp: float):
     Returns:
     - float: The price in c/kWh.
     """
-    tariff_code = translate_tariff(str(tariff_code))
     interval_time = interval_datetime.astimezone(ZoneInfo(time_zone())).time()
     rrp_c_kwh = rrp / 10
 
-    tariff_code = str(tariff_code)[:4]
     tariff = tariffs.get(tariff_code)
 
     if not tariff:
