@@ -24,6 +24,15 @@ def battery_tariff(customer_type: str):
         raise ValueError("Invalid customer type. Must be 'Residential' or 'Business'.")
 
 feed_in_tariffs = {
+    'RESELE': {
+        'name': 'Residential Electrify',
+        'periods': [
+            ('Peak', time(17, 0), time(21, 0), 12.25),
+            ('Off-peak', time(21, 0), time(10, 0), 0),
+            ('Off-peak', time(16, 0), time(17, 0), 0),
+            ('Solar Sponge', time(10, 0), time(16, 0), -1)
+        ]
+    },
     'RELE2W': {
         'name': 'Residential Electrify',
         'periods': [
@@ -75,6 +84,15 @@ tariffs = {
             ('Peak', time(17, 0), time(21, 0), 31.98),
             ('Shoulder', time(21, 0), time(10, 0), 9.49),
             ('Shoulder', time(16, 0), time(17, 0), 9.49),
+            ('Solar Sponge', time(10, 0), time(16, 0), 2.84)
+        ]
+    },
+    'RESELE': {
+        'name': 'Residential Electrify',
+        'periods': [
+            ('Peak', time(17, 0), time(21, 0), 31.98),
+            ('Shoulder', time(16, 0), time(17, 0), 9.49),
+            ('Shoulder', time(21, 0), time(10, 0), 9.49),
             ('Solar Sponge', time(10, 0), time(16, 0), 2.84)
         ]
     },
