@@ -17,8 +17,8 @@ tariffs = {
     'PRTOU': {
         'name': 'Residential TOU',
         'periods': [
-            ('Off-peak', time(0, 0), time(16, 0), 4.8700),
-            ('Peak', time(16, 0), time(21, 0), 18.3400),
+            ('Off-peak', time(0, 0), time(15, 0), 4.8700),
+            ('Peak', time(15, 0), time(21, 0), 19.3400),
             ('Off-peak', time(21, 0), time(23, 59), 4.8700),
         ]
     }
