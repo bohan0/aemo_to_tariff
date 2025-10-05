@@ -31,6 +31,20 @@ class TestErgonFunctions(unittest.TestCase):
         interval_datetime = datetime(2023, 1, 1, 12, 0, tzinfo=ZoneInfo('Australia/Brisbane'))
         self.assertEqual(convert_feed_in_tariff(interval_datetime, 'WRTOUET1', 100), 10.0)
 
+    def test_ERTDEMCT1_tariff(self):
+        # 11:30 RRP $-31.99/MWh
+        interval_datetime = datetime(2025, 4, 5, 11, 30, tzinfo=ZoneInfo('Australia/Brisbane'))
+        rrp = -31.99
+        actual = convert(interval_datetime, 'ERTDEMCT1', rrp=rrp)
+        self.assertAlmostEqual(actual, -2.675, places=2)
+
+    def test_ERTDEMXT1_tariff(self):
+        # 11:30 RRP $-31.99/MWh
+        interval_datetime = datetime(2025, 4, 5, 11, 30, tzinfo=ZoneInfo('Australia/Brisbane'))
+        rrp = -31.99
+        actual = convert(interval_datetime, 'ERTDEMXT1', rrp=rrp)
+        self.assertAlmostEqual(actual, -2.675, places=2)
+
     def test_ERTOUET1_tariff(self):
         # 11:30 RRP $-31.99/MWh
         interval_datetime = datetime(2025, 4, 5, 11, 30, tzinfo=ZoneInfo('Australia/Brisbane'))

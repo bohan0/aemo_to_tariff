@@ -144,6 +144,8 @@ def get_daily_fee(tariff_code: str, annual_usage: float = None):
     """
     tariff_code = translate_tariff(str(tariff_code))
     fee = daily_fees.get(tariff_code)
+    if fee is None:
+        fee = daily_fees.get('ERTOUET1')  # Default to ERTOUET1 if unknown
 
     if isinstance(fee, dict):
         if annual_usage is None:
@@ -206,9 +208,7 @@ def convert(interval_datetime: datetime, tariff_code: str, rrp: float):
 
     if not tariff:
         # Handle unknown tariff codes
-        slope = 1.037869032618134
-        intercept = 5.586606750833143
-        return rrp_c_kwh * slope + intercept
+        tariff = tariffs.get('ERTOUET1')  # Default to ERTOUET1 if unknown
 
     # Find the applicable period and rate
     for period, start, end, rate in tariff['periods']:
