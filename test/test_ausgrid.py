@@ -12,6 +12,7 @@ class TestAusgrid(unittest.TestCase):
         price = convert(interval_time, tariff_code, rrp)
         loss_factor = expected_price / price
         self.assertAlmostEqual(price * 1.12, expected_price, places=1)
+        feed_in = convert_feed_in_tariff(interval_time, tariff_code, rrp)
     
     def test_ea_025_peak_summer(self):
         interval_time = datetime(2025, 1, 22, 17, 45, tzinfo=ZoneInfo(time_zone()))
