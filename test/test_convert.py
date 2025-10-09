@@ -1,7 +1,7 @@
 # test/test_convert.py
 import unittest
 from datetime import datetime
-from aemo_to_tariff import spot_to_tariff, get_daily_fee, calculate_demand_fee, spot_to_feed_in_tariff
+from aemo_to_tariff import spot_to_tariff, get_daily_fee, calculate_demand_fee, spot_to_feed_in_tariff, estimate_demand_fee
 
 class TestTariffConversions(unittest.TestCase):
 
@@ -21,6 +21,21 @@ class TestTariffConversions(unittest.TestCase):
         # With loss factor
         interval_time = datetime.strptime('2024-07-05 14:00+10:00', '%Y-%m-%d %H:%M%z')
         self.assertAlmostEqual(spot_to_tariff(interval_time, 'Energex', '6900', 200, 1.05, 1.01), 21.541, 2)
+        
+        # Demand estimate
+        interval_time = datetime.strptime('2024-07-05 18:00+10:00', '%Y-%m-%d %H:%M%z')
+        self.assertAlmostEqual(estimate_demand_fee(interval_time, 'Energex', '6900', 5.5), 0.0, 2)
+        self.assertAlmostEqual(estimate_demand_fee(interval_time, 'Energex', '3950', 5.5), 28.1985, 2)
+
+    def test_ergon_tariff_017(self):
+        # With loss factor
+        interval_time = datetime.strptime('2024-07-05 14:00+10:00', '%Y-%m-%d %H:%M%z')
+        self.assertAlmostEqual(spot_to_tariff(interval_time, 'Ergon', 'ERTOUET1', 200, 1.05, 1.01), 22.06, 2)
+        
+        # Demand estimate
+        interval_time = datetime.strptime('2024-07-05 18:00+10:00', '%Y-%m-%d %H:%M%z')
+        self.assertAlmostEqual(estimate_demand_fee(interval_time, 'Ergon', 'ERTOUET1', 5.5), 0.0, 2)
+        self.assertAlmostEqual(estimate_demand_fee(interval_time, 'Ergon', 'ERTDEMCT1', 5.5), 38.5, 2)
 
     def test_evoenergy_tariff_017(self):
         # Off peak

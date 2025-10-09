@@ -3,6 +3,7 @@ from datetime import datetime, time
 from zoneinfo import ZoneInfo
 
 from aemo_to_tariff.ergon import (
+    estimate_demand_fee,
     time_zone,
     get_daily_fee,
     calculate_demand_fee,
@@ -44,6 +45,15 @@ class TestErgonFunctions(unittest.TestCase):
         rrp = -31.99
         actual = convert(interval_datetime, 'ERTDEMXT1', rrp=rrp)
         self.assertAlmostEqual(actual, -2.675, places=2)
+
+    def test_ERTDEMXT1_demand_fee(self):
+        # 11:30 RRP $-31.99/MWh
+        interval_datetime = datetime(2025, 4, 5, 18, 30, tzinfo=ZoneInfo('Australia/Brisbane'))
+        demand_kw = 5
+        actual = estimate_demand_fee(interval_datetime, 'ERTDEMXT1', demand_kw=demand_kw)
+        self.assertAlmostEqual(actual, 35, places=2)
+        actual = estimate_demand_fee(interval_datetime, 'ERTDEMCT1', demand_kw=demand_kw)
+        self.assertAlmostEqual(actual, 35, places=2)
 
     def test_ERTOUET1_tariff(self):
         # 11:30 RRP $-31.99/MWh

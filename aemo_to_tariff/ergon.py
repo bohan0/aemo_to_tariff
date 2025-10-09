@@ -73,7 +73,8 @@ tariffs = {
 # Add this to your existing code
 
 demand_charges = {
-    '3700': { 'Peak': 8.998},  # Residential Demand
+    'ERTDEMXT1': { 'Peak': 7},  # Residential Demand
+    'ERTDEMCT1': { 'Peak': 7},  # Residential Demand
     '3900': { 'Peak': 5.127},  # Residential Transitional Demand
     '3600': { 'Peak': 10.289},  # Small Business Demand
     '3800': { 'Peak': 4.975},  # Small Business Transitional Demand
@@ -101,6 +102,38 @@ def translate_tariff(tariff_code: str):
         prefix = code[:2]
         return prefix + '00'
     return code
+
+def estimate_demand_fee(interval_time: datetime, tariff_code: str, demand_kw: float):
+    """
+    Estimate the demand fee for a given tariff code, demand amount, and time period.
+
+    Parameters:
+    - interval_time (datetime): The interval datetime.
+    - tariff_code (str): The tariff code.
+    - demand_kw (float): The maximum demand in kW (or kVA for 8100 and 8300 tariffs).
+
+    Returns:
+    - float: The estimated demand fee in dollars.
+    """
+    tariff_code = translate_tariff(str(tariff_code))
+    time_of_day = interval_time.astimezone(ZoneInfo(time_zone())).time()
+    
+    if tariff_code not in demand_charges:
+        return 0.0  # Return 0 if the tariff doesn't have a demand charge
+
+    charge = demand_charges[tariff_code]
+    if isinstance(charge, dict):
+        # Determine the time period
+        if 'Peak' in charge and time(17, 0) <= time_of_day < time(20, 0):
+            charge_per_kw_per_month = charge['Peak']
+        elif 'Off-Peak' in charge and time(11, 0) <= time_of_day < time(13, 0):
+            charge_per_kw_per_month = charge['Off-Peak']
+        else:
+            charge_per_kw_per_month = charge.get('Shoulder', 0.0)
+    else:
+        charge_per_kw_per_month = charge
+
+    return charge_per_kw_per_month * demand_kw
 
 def calculate_demand_fee(tariff_code: str, demand_kw: float, days: int = 30, tou='peak'):
     """

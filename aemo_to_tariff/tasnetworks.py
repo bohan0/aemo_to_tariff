@@ -208,3 +208,34 @@ def get_daily_fee(tariff_code: str):
     - float: The daily fee in cents.
     """
     return daily_fees.get(tariff_code, 0.0)
+
+def estimate_demand_fee(interval_time: datetime, tariff_code: str, demand_kw: float):
+    """
+    Estimate the demand fee for a given tariff code, demand amount, and time period.
+
+    Parameters:
+    - interval_time (datetime): The interval datetime.
+    - tariff_code (str): The tariff code.
+    - demand_kw (float): The maximum demand in kW (or kVA for 8100 and 8300 tariffs).
+
+    Returns:
+    - float: The estimated demand fee in dollars.
+    """
+    time_of_day = interval_time.astimezone(ZoneInfo(time_zone())).time()
+    
+    if tariff_code not in demand_charges:
+        return 0.0  # Return 0 if the tariff doesn't have a demand charge
+
+    charge = demand_charges[tariff_code]
+    if isinstance(charge, dict):
+        # Determine the time period
+        if 'Peak' in charge and time(17, 0) <= time_of_day < time(20, 0):
+            charge_per_kw_per_month = charge['Peak']
+        elif 'Off-Peak' in charge and time(11, 0) <= time_of_day < time(13, 0):
+            charge_per_kw_per_month = charge['Off-Peak']
+        else:
+            charge_per_kw_per_month = charge.get('Shoulder', 0.0)
+    else:
+        charge_per_kw_per_month = charge
+
+    return charge_per_kw_per_month * demand_kw

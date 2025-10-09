@@ -196,6 +196,45 @@ def calculate_demand_fee(network, tariff, demand_kw, days=30):
         return 0.0
 
 
+def estimate_demand_fee(interval_time, network, tariff, demand_kw):
+    """
+    Estimate the demand fee for a given network, tariff, interval time, and demand amount.
+
+    Parameters:
+    - interval_time (datetime): The interval time.
+    - network (str): The name of the network (e.g., 'Energex', 'Ausgrid', 'Evoenergy').
+    - tariff (str): The tariff code.
+    - demand_kw (float): The maximum demand in kW (or kVA for some tariffs).
+
+    Returns:
+    - float: The estimated demand fee in dollars.
+    """
+    network = network.lower()
+
+    if network == 'energex':
+        return energex.estimate_demand_fee(interval_time, tariff, demand_kw)
+    elif network == 'ergon':
+        return ergon.estimate_demand_fee(interval_time, tariff, demand_kw)
+    elif network == 'ausgrid':
+        return ausgrid.estimate_demand_fee(interval_time, tariff, demand_kw)
+    elif network == 'evoenergy':
+        # Placeholder for Evoenergy demand fee estimation
+        return 0.0
+    elif network == 'sapn':
+        return sapower.estimate_demand_fee(interval_time, tariff, demand_kw)
+    elif network == 'tasnetworks':
+        return tasnetworks.estimate_demand_fee(interval_time, tariff, demand_kw)
+    elif network == 'endeavour':
+        return endeavour.estimate_demand_fee(interval_time, tariff, demand_kw)
+    elif network == 'victoria':
+        return victoria.estimate_demand_fee(interval_time, tariff, demand_kw)
+    elif network == 'ausnet':
+        return ausnet.estimate_demand_fee(interval_time, tariff, demand_kw)
+    elif network == 'essential':
+        return essential.estimate_demand_fee(interval_time, tariff, demand_kw)
+    else:
+        return 0.0
+
 def get_periods(network, tariff: str):
     """
     Get the periods for a given network and tariff.
