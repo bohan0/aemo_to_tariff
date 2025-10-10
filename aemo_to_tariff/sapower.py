@@ -57,66 +57,79 @@ tariffs = {
     'RSR': {
         'name': 'Residential Single Rate',
         'periods': [
-            ('Anytime', time(0, 0), time(23, 59), 14.51)
+            ('Anytime', time(0, 0), time(23, 59), None, 14.51)
         ]
     },
     'RTOU': {
         'name': 'Residential Time of Use',
         'periods': [
-            ('Peak', time(16, 0), time(0, 0), 18.95),
-            ('Peak', time(6, 0), time(10, 0), 18.95),
-            ('Off-peak', time(0, 0), time(6, 0), 9.47),
-            ('Solar Sponge', time(10, 0), time(16, 0), 4.74)
+            ('Peak', time(16, 0), time(0, 0), None, 18.95), # 12 hours per day not captured in the Off Peak
+            ('Peak', time(6, 0), time(10, 0), None, 18.95), # or Solar Sponge windows.
+            ('Off-peak', time(0, 0), time(6, 0), None, 9.47), # Six hour window of 12:00am – 6:00am.
+            ('Solar Sponge', time(10, 0), time(16, 0), None, 4.74) # Six hour window of 10:00am – 4:00pm.
+        ]
+    },
+    'RTOUNE': {
+        'name': 'Residential Time of Use',
+        'periods': [
+            ('Peak', time(16, 0), time(0, 0), None, 18.95), # 12 hours per day not captured in the Off Peak
+            ('Peak', time(6, 0), time(10, 0), None, 18.95), # or Solar Sponge windows.
+            ('Off-peak', time(0, 0), time(6, 0), None, 9.47), # Six hour window of 12:00am – 6:00am.
+            ('Solar Sponge', time(10, 0), time(16, 0), None, 4.74) # Six hour window of 10:00am – 4:00pm.
         ]
     },
     'RPRO': {
         'name': 'Residential Prosumer',
         'periods': [
-            ('Peak', time(17, 0), time(20, 0), 18.95),
-            ('Off-peak', time(16, 0), time(17, 0), 9.47),
-            ('Off-peak', time(20, 0), time(10, 0), 9.47),
-            ('Solar Sponge', time(10, 0), time(16, 0), 4.74)
+            ('Peak', time(17, 0), time(20, 0), None, 18.95),
+            ('Off-peak', time(16, 0), time(17, 0), None, 9.47),
+            ('Off-peak', time(20, 0), time(10, 0), None, 9.47),
+            ('Solar Sponge', time(10, 0), time(16, 0), None, 4.74)
         ]
     },
     'RELE': {
         'name': 'Residential Electrify',
         'periods': [
-            ('Peak', time(17, 0), time(21, 0), 31.98),
-            ('Shoulder', time(21, 0), time(10, 0), 9.49),
-            ('Shoulder', time(16, 0), time(17, 0), 9.49),
-            ('Solar Sponge', time(10, 0), time(16, 0), 2.84)
+            ('Peak', time(17, 0), time(21, 0), None, 31.98),
+            ('Shoulder', time(21, 0), time(10, 0), None, 9.49),
+            ('Shoulder', time(16, 0), time(17, 0), None, 9.49),
+            ('Solar Sponge', time(10, 0), time(16, 0), None, 2.84)
         ]
     },
     'RESELE': {
         'name': 'Residential Electrify',
         'periods': [
-            ('Peak', time(17, 0), time(21, 0), 31.98),
-            ('Shoulder', time(16, 0), time(17, 0), 9.49),
-            ('Shoulder', time(21, 0), time(10, 0), 9.49),
-            ('Solar Sponge', time(10, 0), time(16, 0), 2.84)
+            ('Peak', time(17, 0), time(21, 0), None, 31.98),
+            ('Shoulder', time(16, 0), time(17, 0), None, 9.49),
+            ('Shoulder', time(21, 0), time(10, 0), None, 9.49),
+            ('Solar Sponge', time(10, 0), time(16, 0), None, 2.84)
         ]
     },
     'RELE2W': {
         'name': 'Residential Electrify',
         'periods': [
-            ('Peak', time(17, 0), time(21, 0), 31.98),
-            ('Shoulder', time(16, 0), time(17, 0), 9.49),
-            ('Shoulder', time(21, 0), time(10, 0), 9.49),
-            ('Solar Sponge', time(10, 0), time(16, 0), 2.84)
+            ('Peak', time(17, 0), time(21, 0), None, 31.98),
+            ('Shoulder', time(16, 0), time(17, 0), None, 9.49),
+            ('Shoulder', time(21, 0), time(10, 0), None, 9.49),
+            ('Solar Sponge', time(10, 0), time(16, 0), None, 2.84)
         ]
     },
-    'SBTOU': {
+    'SBTOU': { # 0.2750 0.1034 $ 0.1914
         'name': 'Small Business Time of Use',
         'periods': [
-            ('Peak', time(7, 0), time(21, 0), 25.68),
-            ('Off-peak', time(21, 0), time(7, 0), 9.69)
+            ('Peak', time(17, 0), time(21, 0), [11, 12, 1, 2, 3], 27.50), # 5:00pm – 9:00pm All days November – March
+            ('Shoulder', time(7, 0), time(17, 0), [11, 12, 1, 2, 3], 19.14), # 7:00am – 5:00pm WD November – March and
+            ('Shoulder', time(7, 0), time(17, 0), [4, 5, 6, 7, 8, 9, 10], 19.14), # 7:00am – 9:00pm WD April – October.
+            ('Off-peak', None, None, None, 10.34) # All other times
         ]
     },
-    'SBTOUE': {
-        'name': 'Small Business Time of Use Electrify',
+    'SBTOUNE': {
+        'name': 'Small Business Time of Use',
         'periods': [
-            ('Peak', time(7, 0), time(21, 0), 32.57),
-            ('Off-peak', time(21, 0), time(7, 0), 9.60)
+            ('Peak', time(17, 0), time(21, 0), [11, 12, 1, 2, 3], 27.50), # 5:00pm – 9:00pm All days November – March
+            ('Shoulder', time(7, 0), time(17, 0), [11, 12, 1, 2, 3], 19.14), # 7:00am – 5:00pm WD November – March and
+            ('Shoulder', time(7, 0), time(17, 0), [4, 5, 6, 7, 8, 9, 10], 19.14), # 7:00am – 9:00pm WD April – October.
+            ('Off-peak', None, None, None, 10.34) # All other times
         ]
     }
 }
@@ -166,11 +179,10 @@ def convert_feed_in_tariff(interval_datetime: datetime, tariff_code: str, rrp: f
         return rrp_c_kwh
 
     current_month = interval_datetime.month
-    is_peak_month = current_month in feed_in_tariff.get('peak_months', [])
 
-    for period_name, start, end, rate in feed_in_tariff['periods']:
-        if period_name == 'Peak' and not is_peak_month:
-            continue  # Skip peak period if not in peak months
+    for period_name, start, end, months, rate in feed_in_tariff['periods']:
+        if months and current_month not in months:
+            continue  # Skip period if not in applicable months
 
         if start <= interval_time < end or (start > end and (interval_time >= start or interval_time < end)):
             total_price = rrp_c_kwh + rate
@@ -191,24 +203,35 @@ def convert(interval_datetime: datetime, tariff_code: str, rrp: float):
     - float: The price in c/kWh.
     """
     interval_time = interval_datetime.astimezone(ZoneInfo(time_zone())).time()
+    print('Interval Time:', interval_datetime, '->', interval_time, 'Tariff Code:', tariff_code, 'RRP:', rrp)
     rrp_c_kwh = rrp / 10
 
     tariff = tariffs.get(tariff_code)
 
-    if not tariff:
-        # Handle unknown tariff codes
-        slope = 1.037869032618134
-        intercept = 5.586606750833143
-        return rrp_c_kwh * slope + intercept
+    # Handle unknown tariff codes
+    slope = 1.037869032618134
+    intercept = 5.586606750833143
+    default_tariff = rrp_c_kwh * slope + intercept
+
+    current_month = interval_datetime.month
 
     # Find the applicable period and rate
-    for period, start, end, rate in tariff['periods']:
-        if start <= interval_time < end or (start > end and (interval_time >= start or interval_time < end)):
+    for period, start, end, months, rate in tariff['periods']:
+        if start is None and end is None:
+            if months and current_month not in months:
+                continue  # Skip period if not in applicable months
+            default_tariff = rrp_c_kwh + rate
+        elif start <= interval_time < end or (start > end and (interval_time >= start or interval_time < end)):
+            print('Checking period:', period, 'Start:', start, 'End:', end, 'Months:', months, 'Rate:', rate)
+            print('Current month:', current_month, 'Interval time:', interval_time)
+            if months and current_month not in months:
+                continue  # Skip period if not in applicable months
             total_price = rrp_c_kwh + rate
+            print('Found tariff match:', period, 'in tariff code:', tariff_code, rate, 'Total Price:', total_price)
             return total_price
 
     # If no period is found, use the first rate as default
-    return rrp_c_kwh + tariff['periods'][0][3]
+    return default_tariff
 
 def get_daily_fee(tariff_code: str):
     """
