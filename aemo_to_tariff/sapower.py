@@ -27,7 +27,7 @@ feed_in_tariffs = {
     'RESELE': {
         'name': 'Residential Electrify',
         'periods': [
-            ('Peak', time(17, 0), time(21, 0), 12.25),
+            ('Peak', time(17, 0), time(21, 0), 5.5),
             ('Off-peak', time(21, 0), time(10, 0), 0),
             ('Off-peak', time(16, 0), time(17, 0), 0),
             ('Solar Sponge', time(10, 0), time(16, 0), -1)
@@ -36,7 +36,7 @@ feed_in_tariffs = {
     'RELE2W': {
         'name': 'Residential Electrify',
         'periods': [
-            ('Peak', time(17, 0), time(21, 0), 12.25),
+            ('Peak', time(17, 0), time(21, 0), 5.5),
             ('Off-peak', time(21, 0), time(10, 0), 0),
             ('Off-peak', time(16, 0), time(17, 0), 0),
             ('Solar Sponge', time(10, 0), time(16, 0), -1)
@@ -45,7 +45,7 @@ feed_in_tariffs = {
     'RTOU': {
         'name': 'Residential Time of Use',
         'periods': [
-            ('Peak', time(16, 0), time(0, 0), 0),
+            ('Peak', time(16, 0), time(0, 0), 3.3),
             ('Peak', time(6, 0), time(10, 0), 0),
             ('Off-peak', time(0, 0), time(6, 0), 0),
             ('Solar Sponge', time(10, 0), time(16, 0), -1)
@@ -180,9 +180,7 @@ def convert_feed_in_tariff(interval_datetime: datetime, tariff_code: str, rrp: f
 
     current_month = interval_datetime.month
 
-    for period_name, start, end, months, rate in feed_in_tariff['periods']:
-        if months and current_month not in months:
-            continue  # Skip period if not in applicable months
+    for period_name, start, end, rate in feed_in_tariff['periods']:
 
         if start <= interval_time < end or (start > end and (interval_time >= start or interval_time < end)):
             total_price = rrp_c_kwh + rate
