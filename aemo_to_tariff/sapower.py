@@ -108,8 +108,10 @@ tariffs = {
     'SBTOU': {
         'name': 'Small Business Time of Use',
         'periods': [
-            ('Peak', time(7, 0), time(21, 0), 25.68),
-            ('Off-peak', time(21, 0), time(7, 0), 9.69)
+            ('Peak', time(17, 0), time(21, 0), 27.5),  # Nov to March
+            ('Off-peak', time(21, 0), time(7, 0), 10.34), # TODO: Update to 2025-26
+            ('Shoulder', time(16, 0), time(17, 0), 19.14),
+            ('Shoulder', time(21, 0), time(10, 0), 19.14)
         ]
     },
     'SBTOUE': {
