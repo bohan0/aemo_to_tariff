@@ -42,6 +42,12 @@ feed_in_tariffs = {
             ('Solar Sponge', time(10, 0), time(16, 0), -1)
         ]
     },
+    'B2R': {
+        'name': 'Business Two Rate',
+        'periods': [
+            ('Solar Sponge', time(10, 0), time(16, 0), -0.76)
+        ]
+    },
     'RTOU': {
         'name': 'Residential Time of Use',
         'periods': [
@@ -112,6 +118,14 @@ tariffs = {
             ('Shoulder', time(16, 0), time(17, 0), None, 9.49),
             ('Shoulder', time(21, 0), time(10, 0), None, 9.49),
             ('Solar Sponge', time(10, 0), time(16, 0), None, 2.84)
+        ]
+    },
+    'B2R': { # 0.2065 0.1032 $ 0.0726 
+        'name': 'Business Two Rate',
+        'periods': [
+            ('Peak', time(17, 0), time(21, 0), None, 20.65),
+            ('Shoulder', time(16, 0), time(17, 0), None, 10.32),
+            ('Off-peak', time(21, 0), time(10, 0), None, 7.26)
         ]
     },
     'SBTOU': { # 0.2750 0.1034 $ 0.1914
