@@ -48,15 +48,6 @@ feed_in_tariffs = {
             ('Solar Sponge', time(10, 0), time(16, 0), -0.76)
         ]
     },
-    'RTOU': {
-        'name': 'Residential Time of Use',
-        'periods': [
-            ('Peak', time(16, 0), time(0, 0), 3.3),
-            ('Peak', time(6, 0), time(10, 0), 0),
-            ('Off-peak', time(0, 0), time(6, 0), 0),
-            ('Solar Sponge', time(10, 0), time(16, 0), -1)
-        ]
-    },
 }
 
 tariffs = {
