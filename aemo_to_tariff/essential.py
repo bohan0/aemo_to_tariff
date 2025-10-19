@@ -28,6 +28,13 @@ feed_in_tariffs = {
             ('Peak', time(16, 0), time(20, 0), 11.5725),
             ('Off Peak', time(0, 0), time(10, 0), -0.8172)
         ]
+    },
+    'BLNBEX1': {
+        'name': 'LV Residential Business Solar Export',
+        'periods': [
+            ('Peak', time(16, 0), time(20, 0), 12.0871),
+            ('Off Peak', time(0, 0), time(10, 0), -0.8172)
+        ]
     }
 }
 
