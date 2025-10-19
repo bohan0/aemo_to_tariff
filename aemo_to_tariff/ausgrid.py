@@ -97,7 +97,7 @@ def get_periods(tariff_code: str):
 
 def convert_feed_in_tariff(interval_datetime: datetime, tariff_code: str, rrp: float):
     rrp_c_kwh = rrp / 10
-    if tariff_code in ['EA025X', 'EA025']:
+    if tariff_code in ['EA029']:
         if interval_datetime.hour >= 16 and interval_datetime.hour < 21:
             reward = 3.85
             return rrp_c_kwh + reward
