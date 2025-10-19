@@ -33,6 +33,15 @@ feed_in_tariffs = {
             ('Solar Sponge', time(10, 0), time(16, 0), -1)
         ]
     },
+    'RESELEX': {
+        'name': 'Residential Electrify',
+        'periods': [
+            ('Peak', time(17, 0), time(21, 0), 5.5),
+            ('Off-peak', time(21, 0), time(10, 0), 0),
+            ('Off-peak', time(16, 0), time(17, 0), 0),
+            ('Solar Sponge', time(10, 0), time(16, 0), -1)
+        ]
+    },
     'RELE2W': {
         'name': 'Residential Electrify',
         'periods': [
