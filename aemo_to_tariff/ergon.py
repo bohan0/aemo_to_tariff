@@ -5,7 +5,7 @@ from zoneinfo import ZoneInfo
 def time_zone():
     return 'Australia/Brisbane'
 
-def battery_tariff(customer_type: str):
+def battery_tariffs(customer_type: str):
     """
     Get the battery tariff for a given customer type.
 
@@ -16,9 +16,9 @@ def battery_tariff(customer_type: str):
     - str: The battery tariff code.
     """
     if customer_type == 'Residential':
-        return 'ERTOUET1'
+        return {'import':['ERTOUET1'], 'export':['NVGC2', 'NVGX2']}
     elif customer_type == 'Business':
-        return 'EBTOUET1'
+        return {'import':['EBTOUET1'], 'export':['NVGC2', 'NVGX2']}
     else:
         raise ValueError("Invalid customer type. Must be 'Residential' or 'Business'.")
 

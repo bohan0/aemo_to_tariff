@@ -5,7 +5,7 @@ from zoneinfo import ZoneInfo
 def time_zone():
     return 'Australia/Sydney'
 
-def battery_tariff(customer_type: str):
+def battery_tariffs(customer_type: str):
     """
     Get the battery tariff for a given customer type.
 
@@ -16,9 +16,11 @@ def battery_tariff(customer_type: str):
     - str: The battery tariff code.
     """
     if customer_type == 'Residential':
-        return 'N71'
+        return {'import': ['N71'], 'export': ['N61']}
     elif customer_type == 'Business':
-        return 'N91'
+        return {'import': ['N91'], 'export': []}
+    elif customer_type == 'Battery':
+        return {'import': ['N95'], 'export': ['N95']}
     else:
         raise ValueError("Invalid customer type. Must be 'Residential' or 'Business'.")
 
@@ -73,6 +75,18 @@ tariffs = {
             ('Off Peak', time(20, 0), time(23, 59), 3.6458)
         ],
         'peak_months': [11, 12, 1, 2, 3, 6, 7, 8]  # November–March and June–August
+    },
+    'N95': {
+        'name': 'Storage',
+        'periods': [
+            ('High-season Peak', time(16, 0), time(20, 0), 14.4462),
+            ('Low-season Peak', time(16, 0), time(20, 0), 5.6962),
+            ('Solar Soak', time(10, 0), time(14, 0), 0.0),
+            ('Off Peak', time(0, 0), time(10, 0), 2.0126),
+            ('Off Peak', time(14, 0), time(16, 0), 2.0126),
+            ('Off Peak', time(20, 0), time(23, 59), 2.0126)
+        ],
+        'peak_months': [11, 12, 1, 2, 3, 6, 7, 8]  # November–March and June–August
     }
 }
 
@@ -87,9 +101,18 @@ feed_in_tariffs = {
     'N61': {
         'name': 'Residential Electrify',
         'periods': [
-            ('High-season Peak', time(16, 0), time(20, 0), 11.3033),
-            ('Low-season Peak', time(16, 0), time(20, 0), 3.3488),
-            ('Off Peak', time(0, 0), time(10, 0), -1.7900)
+            ('High-season Peak', time(16, 0), time(20, 0), 12.4336),
+            ('Low-season Peak', time(16, 0), time(20, 0), 3.6837),
+            ('Off Peak', time(0, 0), time(10, 0), -1.9690)
+        ],
+        'peak_months': [11, 12, 1, 2, 3, 6, 7, 8]  # November–March and June–August
+    },
+    'N95': {
+        'name': 'Storage',
+        'periods': [
+            ('High-season Peak', time(16, 0), time(20, 0), 12.4336),
+            ('Low-season Peak', time(16, 0), time(20, 0), 3.6837),
+            ('Off Peak', time(0, 0), time(10, 0), -1.9690)
         ],
         'peak_months': [11, 12, 1, 2, 3, 6, 7, 8]  # November–March and June–August
     }

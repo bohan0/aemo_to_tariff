@@ -6,7 +6,7 @@ def time_zone():
     return 'Australia/Adelaide'
 
 
-def battery_tariff(customer_type: str):
+def battery_tariffs(customer_type: str):
     """
     Get the battery tariff for a given customer type.
 
@@ -17,9 +17,9 @@ def battery_tariff(customer_type: str):
     - str: The battery tariff code.
     """
     if customer_type == 'Residential':
-        return 'RELE2W'
+        return {'import': ['RELE2W', 'RESELEX', 'RESELE'], 'export': ['RESELE', 'RESELEX', 'RELE2W']}
     elif customer_type == 'Business':
-        return 'SBTOU'
+        return {'import': ['SBELE'], 'export': ['SBELE']}
     else:
         raise ValueError("Invalid customer type. Must be 'Residential' or 'Business'.")
 

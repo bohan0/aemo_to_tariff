@@ -5,7 +5,7 @@ from zoneinfo import ZoneInfo
 def time_zone():
     return 'Australia/Sydney'
 
-def battery_tariff(customer_type: str):
+def battery_tariffs(customer_type: str):
     """
     Get the battery tariff for a given customer type.
 
@@ -16,9 +16,9 @@ def battery_tariff(customer_type: str):
     - str: The battery tariff code.
     """
     if customer_type == 'Residential':
-        return 'BLNT3AL'
+        return {'import': ['BLNT3AL'], 'export': ['BLNREX2']}
     elif customer_type == 'Business':
-        return 'BLNT2AL'
+        return {'import': ['BLNT2AL'], 'export': ['BLNBEX1']}
 
 # BLNREX2 is a feed-in tariff, not a TOU tariff. -11.5725 - 0.8172
 feed_in_tariffs = {

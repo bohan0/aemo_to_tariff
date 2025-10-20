@@ -6,7 +6,7 @@ from datetime import time
 def time_zone():
     return 'Australia/ACT'
 
-def battery_tariff(customer_type: str):
+def battery_tariffs(customer_type: str):
     """
     Get the battery tariff for a given customer type.
 
@@ -17,11 +17,9 @@ def battery_tariff(customer_type: str):
     - str: The battery tariff code.
     """
     if customer_type == 'Residential':
-        return '017'
+        return {'import': ['017'], 'export': []}
     elif customer_type == 'Business':
-        return '090'
-    elif customer_type == 'BatteryTrial':
-        return '026'
+        return {'import': ['090'], 'export': []}
     else:
         raise ValueError("Invalid customer type. Must be 'Residential' or 'Business'.")
 

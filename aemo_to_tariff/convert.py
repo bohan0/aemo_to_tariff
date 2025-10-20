@@ -274,3 +274,36 @@ def get_periods(network, tariff: str):
         return ausnet.get_periods(tariff)
     else:
         return energex.get_periods(tariff)
+
+
+def battery_tariffs(network, tariff: str):
+    """
+    Get the periods for a given network and tariff.
+
+    Parameter:
+    - network (str): The name of the network (e.g., 'Energex', 'Ausgrid', 'Evoenergy').
+    - tariff (str): The tariff code.
+
+    Returns:
+    - list: A list of periods for the given tariff.
+    """
+    network = network.lower()
+
+    if network == 'energex':
+        return energex.battery_tariffs(tariff)
+    elif network == 'ausgrid':
+        return ausgrid.battery_tariff(tariff)
+    elif network == 'ergon':
+        return ergon.battery_tariffs(tariff)
+    elif network == 'evoenergy':
+        return evoenergy.battery_tariffs(tariff)
+    elif network == 'sapn':
+        return sapower.battery_tariffs(tariff)
+    elif network == 'tasnetworks':
+        return tasnetworks.battery_tariffs(tariff)
+    elif network == 'endeavour':
+        return endeavour.battery_tariffs(tariff)
+    elif network == 'essential':
+        return essential.battery_tariffs(tariff)
+    else:
+        return energex.battery_tariffs(tariff)
