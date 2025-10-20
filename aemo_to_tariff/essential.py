@@ -15,9 +15,9 @@ def battery_tariffs(customer_type: str):
     Returns:
     - str: The battery tariff code.
     """
-    if customer_type == 'Residential':
+    if customer_type.lower() == 'residential':
         return {'import': ['BLNT3AL'], 'export': ['BLNREX2']}
-    elif customer_type == 'Business':
+    elif customer_type.lower() == 'business':
         return {'import': ['BLNT2AL'], 'export': ['BLNBEX1']}
 
 # BLNREX2 is a feed-in tariff, not a TOU tariff. -11.5725 - 0.8172

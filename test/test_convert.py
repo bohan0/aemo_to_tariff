@@ -1,10 +1,15 @@
 # test/test_convert.py
 import unittest
 from datetime import datetime
-from aemo_to_tariff import spot_to_tariff, get_daily_fee, calculate_demand_fee, spot_to_feed_in_tariff, estimate_demand_fee
+from aemo_to_tariff import (spot_to_tariff, get_daily_fee, calculate_demand_fee,
+                            spot_to_feed_in_tariff, estimate_demand_fee, battery_tariffs)
 
 class TestTariffConversions(unittest.TestCase):
 
+    def test_battery_tariff(self):
+        expected_includes = 'BLNREX2'
+        self.assertIn(expected_includes, battery_tariffs(network='Essential', customer_type='Residential')['export'])
+        
     def test_energex_tariff_6970(self):
         # Off peak
         interval_time = datetime.strptime('2024-07-05 14:00+10:00', '%Y-%m-%d %H:%M%z')

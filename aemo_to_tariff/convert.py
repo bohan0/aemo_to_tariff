@@ -276,34 +276,32 @@ def get_periods(network, tariff: str):
         return energex.get_periods(tariff)
 
 
-def battery_tariffs(network, tariff: str):
+def battery_tariffs(network, customer_type: str):
     """
-    Get the periods for a given network and tariff.
-
-    Parameter:
+    Get the battery tariffs for a given network and customer type.
+    Parameters:
     - network (str): The name of the network (e.g., 'Energex', 'Ausgrid', 'Evoenergy').
-    - tariff (str): The tariff code.
-
+    - customer_type (str): The customer type ('Residential' or 'Business').
     Returns:
-    - list: A list of periods for the given tariff.
+    - dict: A dictionary with 'import' and 'export' tariff codes.
     """
     network = network.lower()
 
     if network == 'energex':
-        return energex.battery_tariffs(tariff)
+        return energex.battery_tariffs(customer_type)
     elif network == 'ausgrid':
-        return ausgrid.battery_tariff(tariff)
+        return ausgrid.battery_tariff(customer_type)
     elif network == 'ergon':
-        return ergon.battery_tariffs(tariff)
+        return ergon.battery_tariffs(customer_type)
     elif network == 'evoenergy':
-        return evoenergy.battery_tariffs(tariff)
+        return evoenergy.battery_tariffs(customer_type)
     elif network == 'sapn':
-        return sapower.battery_tariffs(tariff)
+        return sapower.battery_tariffs(customer_type)
     elif network == 'tasnetworks':
-        return tasnetworks.battery_tariffs(tariff)
+        return tasnetworks.battery_tariffs(customer_type)
     elif network == 'endeavour':
-        return endeavour.battery_tariffs(tariff)
+        return endeavour.battery_tariffs(customer_type)
     elif network == 'essential':
-        return essential.battery_tariffs(tariff)
+        return essential.battery_tariffs(customer_type)
     else:
-        return energex.battery_tariffs(tariff)
+        return energex.battery_tariffs(customer_type)
