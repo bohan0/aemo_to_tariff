@@ -290,7 +290,7 @@ def battery_tariffs(network, customer_type: str):
     if network == 'energex':
         return energex.battery_tariffs(customer_type)
     elif network == 'ausgrid':
-        return ausgrid.battery_tariff(customer_type)
+        return ausgrid.battery_tariffs(customer_type)
     elif network == 'ergon':
         return ergon.battery_tariffs(customer_type)
     elif network == 'evoenergy':

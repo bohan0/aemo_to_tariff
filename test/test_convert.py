@@ -9,6 +9,12 @@ class TestTariffConversions(unittest.TestCase):
     def test_battery_tariff(self):
         expected_includes = 'BLNREX2'
         self.assertIn(expected_includes, battery_tariffs(network='Essential', customer_type='Residential')['export'])
+        expected_includes = 'EA029'
+        self.assertIn(expected_includes, battery_tariffs(network='Ausgrid', customer_type='Residential')['export'])
+        expected_includes = 'RESELE'
+        self.assertIn(expected_includes, battery_tariffs(network='SAPN', customer_type='Residential')['export'])
+        expected_includes = 'N61'
+        self.assertIn(expected_includes, battery_tariffs(network='Endeavour', customer_type='Residential')['export'])
         
     def test_energex_tariff_6970(self):
         # Off peak
