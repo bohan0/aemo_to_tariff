@@ -110,6 +110,24 @@ tariffs = {
         ],
         'rate': 10.195
     },
+    '8900': {
+        'name': 'Small 8900 TOU',
+        'periods': [
+            ('Evening', time(16, 0), time(21, 0), 22.98),
+            ('Overnight', time(21, 0), time(11, 0), 11.02),
+            ('Day', time(11, 0), time(16, 0), 8.37)
+        ],
+        'rate': 10.195
+    },
+    '8800': {
+        'name': 'Small 8800 TOU',
+        'periods': [
+            ('Evening', time(7, 0), time(21, 0), 14.58),
+            ('Overnight', time(21, 0), time(23, 59), 9.59),
+            ('Day', time(0, 0), time(7, 0), 9.59)
+        ],
+        'rate': 10.195
+    },
     '6800': {
         'name': 'Small Business ToU Energy',
         'periods': [

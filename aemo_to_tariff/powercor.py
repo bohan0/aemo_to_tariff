@@ -17,9 +17,25 @@ tariffs = {
     'PRTOU': {
         'name': 'Residential TOU',
         'periods': [
-            ('Off-peak', time(0, 0), time(15, 0), 4.8700),
-            ('Peak', time(15, 0), time(21, 0), 19.3400),
-            ('Off-peak', time(21, 0), time(23, 59), 4.8700),
+            ('Off-peak', time(0, 0), time(15, 0), 5.07),
+            ('Peak', time(15, 0), time(21, 0), 20.17),
+            ('Off-peak', time(21, 0), time(23, 59), 5.07),
+        ]
+    },
+    'NDMO21': {
+        'name': 'NDMO21 TOU',
+        'periods': [
+            ('Off-peak', time(0, 0), time(15, 0), 5.61),
+            ('Peak', time(15, 0), time(21, 0), 19.29),
+            ('Off-peak', time(21, 0), time(23, 59), 5.61),
+        ]
+    },
+    'NDTOU': {
+        'name': 'NDTOU TOU',
+        'periods': [
+            ('Off-peak', time(0, 0), time(15, 0), 4.58),
+            ('Peak', time(15, 0), time(21, 0), 20.60),
+            ('Off-peak', time(21, 0), time(23, 59), 4.58),
         ]
     },
     'PRDS': {
