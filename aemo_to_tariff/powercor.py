@@ -21,6 +21,16 @@ tariffs = {
             ('Peak', time(15, 0), time(21, 0), 19.3400),
             ('Off-peak', time(21, 0), time(23, 59), 4.8700),
         ]
+    },
+    'PRDS': {
+        'name': 'Residential daytime saver',
+        'periods': [
+            ('Off-peak', time(0, 0), time(10, 0), 7.0),
+            ('Day', time(10, 0), time(10, 0), 0.0),
+            ('Off-peak', time(15, 0), time(16, 00), 7.0),
+            ('Peak', time(16, 0), time(21, 0), 19.61),
+            ('Off-peak', time(21, 0), time(23, 59), 7.0),
+        ]
     }
 }
 
@@ -34,7 +44,7 @@ demand_charges = {
 }
 
 def get_daily_fee(tariff_code: str):
-    return 39.7300
+    return 41.10
 
 def get_periods(tariff_code: str):
     tariff = tariffs.get(tariff_code)
