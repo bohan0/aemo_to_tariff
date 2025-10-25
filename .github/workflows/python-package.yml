@@ -33,4 +33,4 @@ jobs:
         pip install -e .
 
     - name: Run tests
-      run: nose2
+      run: python -m nose2
