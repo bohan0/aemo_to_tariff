@@ -118,9 +118,9 @@ feed_in_tariffs = {
     }
 }
 
-def calculate_daily_fee(tariff_code: str):
+def get_daily_fee(tariff_code: str):
     """
-    Calculate the daily fee for a given tariff.
+    Get the daily fee for a given tariff.
 
     Parameters:
     - tariff_code (str): The tariff code.
