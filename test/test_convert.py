@@ -38,6 +38,16 @@ class TestTariffConversions(unittest.TestCase):
         self.assertAlmostEqual(estimate_demand_fee(interval_time, 'Energex', '6900', 5.5), 0.0, 2)
         self.assertAlmostEqual(estimate_demand_fee(interval_time, 'Energex', '3950', 5.5), 28.1985, 2)
 
+    def test_powercor_tariff_017(self):
+        # With loss factor 6.2516935 -44.75
+        interval_time = datetime.strptime('2024-07-05 14:00+10:00', '%Y-%m-%d %H:%M%z')
+        self.assertAlmostEqual(spot_to_tariff(interval_time, 'Powercor', 'PRDS', -18.79, 1.058, 1.01), -2.08574, 1)
+
+        # PRDS estimate
+        interval_time = datetime.strptime('2024-09-05 15:00+10:00', '%Y-%m-%d %H:%M%z')
+        expected_price = (17.95919 * 0.99) - 2.25 - 3.9606291203999966
+        self.assertAlmostEqual(spot_to_tariff(interval_time, 'Powercor', 'PRDS', 42.53, 1.058, 1.00), expected_price, 2)
+    
     def test_ergon_tariff_017(self):
         # With loss factor
         interval_time = datetime.strptime('2024-07-05 14:00+10:00', '%Y-%m-%d %H:%M%z')
