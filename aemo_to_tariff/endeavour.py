@@ -95,12 +95,13 @@ demand_charges = {
     'N91': None,
     'N19': {
         'Peak': 5.4400,  # $/kW/day
-        'Off-Peak': 3.6458  # $/kW/day
+        'Shoulder': 0.0,  # $/kW/day
+        'Off-Peak': 0.0  # $/kW/day
     },
     'N73': {
         'Peak': 5.4400,  # $/kW/day
         'Off-Peak': 0.0,  # $/kW/day
-        'Shoulder': 3.6458  # $/kW/day
+        'Shoulder': 0.0  # $/kW/day
     }
 }
 
@@ -162,7 +163,7 @@ def estimate_demand_fee(interval_time: datetime, tariff_code: str, demand_kw: fl
         return 0.0  # Return 0 if the tariff doesn't have a demand charge
     if isinstance(charge, dict):
         # Determine the time period
-        if 'Peak' in charge and time(17, 0) <= time_of_day < time(20, 0):
+        if 'Peak' in charge and time(16, 0) <= time_of_day < time(21, 0):
             charge_per_kw_per_month = charge['Peak']
         elif 'Off-Peak' in charge and time(11, 0) <= time_of_day < time(13, 0):
             charge_per_kw_per_month = charge['Off-Peak']
