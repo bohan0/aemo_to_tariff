@@ -282,8 +282,10 @@ daily_fees = {
 
 # Demand charges in dollars per kW per day (approx. conversions from $/kVA/month)
 demand_charges = {
-    'BLND1AR': 0.16,  # ~4.77 $/kVA/month => ~$0.16 /kW/day
-    'BLND1AB': 0.30,  # ~8.92 $/kVA/month => ~$0.30 /kW/day
+    'BLNRSS2': None,
+    'BLNRSS2': None,
+    'BLND1AR': {'peak': 8.998},  # ~4.77 $/kVA/month => ~$0.16 /kW/day
+    'BLND1AB': {'peak': 8.998},  # ~8.92 $/kVA/month => ~$0.30 /kW/day
 }
 
 def get_periods(tariff_code: str):
@@ -370,29 +372,30 @@ def estimate_demand_fee(interval_time: datetime, tariff_code: str, demand_kw: fl
     """
     time_of_day = interval_time.astimezone(ZoneInfo(time_zone())).time()
     
-    if tariff_code not in demand_charges:
+    charge = demand_charges['BLND1AR']
+    if tariff_code in demand_charges:
+        charge = demand_charges[tariff_code]
+    if charge is None:
         return 0.0  # Return 0 if the tariff doesn't have a demand charge
-
-    charge = demand_charges[tariff_code]
     if isinstance(charge, dict):
         # Determine the time period
-        if 'Peak' in charge and time(17, 0) <= time_of_day < time(20, 0):
-            charge_per_kw_per_month = charge['Peak']
-        elif 'Off-Peak' in charge and time(11, 0) <= time_of_day < time(13, 0):
-            charge_per_kw_per_month = charge['Off-Peak']
+        if 'peak' in charge and time(17, 0) <= time_of_day < time(20, 0):
+            charge_per_kw_per_month = charge['peak']
+        elif 'off-peak' in charge and time(11, 0) <= time_of_day < time(13, 0):
+            charge_per_kw_per_month = charge['off-peak']
         else:
-            charge_per_kw_per_month = charge.get('Shoulder', 0.0)
+            charge_per_kw_per_month = charge.get('shoulder', 0.0)
     else:
         charge_per_kw_per_month = charge
 
     return charge_per_kw_per_month * demand_kw
 
-def calculate_demand_fee(tariff_code: str, demand_kw: float, days: int = 30) -> float:
+def calculate_demand_fee(tariff_code: str, demand_kw: float, days: int = 30, tou='Peak') -> float:
     """
     Calculate the demand charge for a given tariff code, maximum demand (kW), and billing period (days).
 
     Returns:
     - float: The demand fee in dollars (i.e. demand_charge $/kW/day * demand_kw * days).
     """
-    daily_charge = demand_charges.get(tariff_code, 0.0)
+    daily_charge = demand_charges.get(tariff_code, {}).get(tou.lower(), 0.0)
     return daily_charge * demand_kw * days

@@ -73,6 +73,7 @@ tariffs = {
 # Add this to your existing code
 
 demand_charges = {
+    'ERTOUET1': None,
     'ERTDEMXT1': { 'Peak': 7},  # Residential Demand
     'ERTDEMCT1': { 'Peak': 7},  # Residential Demand
     '3900': { 'Peak': 5.127},  # Residential Transitional Demand
@@ -118,10 +119,11 @@ def estimate_demand_fee(interval_time: datetime, tariff_code: str, demand_kw: fl
     tariff_code = translate_tariff(str(tariff_code))
     time_of_day = interval_time.astimezone(ZoneInfo(time_zone())).time()
     
-    if tariff_code not in demand_charges:
+    charge = demand_charges['ERTDEMXT1']
+    if tariff_code in demand_charges:
+        charge = demand_charges[tariff_code]
+    if charge is None:
         return 0.0  # Return 0 if the tariff doesn't have a demand charge
-
-    charge = demand_charges[tariff_code]
     if isinstance(charge, dict):
         # Determine the time period
         if 'Peak' in charge and time(17, 0) <= time_of_day < time(20, 0):

@@ -161,6 +161,10 @@ daily_fees = {
 }
 
 demand_charges = {
+    'RESELE': None,
+    'RELE2W': None,
+    'SBTOU': None,
+    'SBTOUNE': None,
     'RPRO': 83.39,  # $/kW/day
     'SBTOUD': 8.42  # $/kW/day
 }
@@ -269,7 +273,9 @@ def calculate_demand_fee(tariff_code: str, demand_kw: float, days: int = 30):
     Returns:
     - float: The demand fee in dollars.
     """
-    daily_charge = demand_charges.get(tariff_code, 0.0)
+    daily_charge = demand_charges.get(tariff_code, None)
+    if daily_charge is None:
+        return 0.0  # Return 0 if the tariff doesn't have a demand charge
     return daily_charge * demand_kw * days
 
 def estimate_demand_fee(interval_time: datetime, tariff_code: str, demand_kw: float):
@@ -286,10 +292,11 @@ def estimate_demand_fee(interval_time: datetime, tariff_code: str, demand_kw: fl
     """
     time_of_day = interval_time.astimezone(ZoneInfo(time_zone())).time()
     
-    if tariff_code not in demand_charges:
+    charge = demand_charges['RPRO']
+    if tariff_code in demand_charges:
+        charge = demand_charges[tariff_code]
+    if charge is None:
         return 0.0  # Return 0 if the tariff doesn't have a demand charge
-
-    charge = demand_charges[tariff_code]
     if isinstance(charge, dict):
         # Determine the time period
         if 'Peak' in charge and time(17, 0) <= time_of_day < time(20, 0):

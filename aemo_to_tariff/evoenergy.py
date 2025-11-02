@@ -109,8 +109,19 @@ feed_in_tariffs = {
 }
 
 demand_charges = {
-    '026': 83.39,  # $/kW/day
-    '090': 8.42   # $/kW/day
+    '017': None,
+    '026': {
+        'name': 'Residential Demand',
+        'periods': [
+            ('Peak', time(15, 0), time(22, 59), 33.2942),  # ¢/kW/day
+        ]
+    },  # $/kW/day
+    '090': {
+        'name': 'Residential Demand',
+        'periods': [
+            ('Peak', time(15, 0), time(22, 59), 33.2942),  # ¢/kW/day
+        ]
+    },   # $/kW/day
 }
 
 def get_periods(tariff_code: str):
@@ -151,10 +162,11 @@ def estimate_demand_fee(interval_time: datetime, tariff_code: str, demand_kw: fl
     """
     time_of_day = interval_time.astimezone(ZoneInfo(time_zone())).time()
     
-    if tariff_code not in demand_charges:
+    charge = demand_charges['026']
+    if tariff_code in demand_charges:
+        charge = demand_charges[tariff_code]
+    if charge is None:
         return 0.0  # Return 0 if the tariff doesn't have a demand charge
-
-    charge = demand_charges[tariff_code]
     if isinstance(charge, dict):
         # Determine the time period
         if 'Peak' in charge and time(17, 0) <= time_of_day < time(20, 0):

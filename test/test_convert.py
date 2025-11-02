@@ -79,6 +79,22 @@ class TestTariffConversions(unittest.TestCase):
         self.assertAlmostEqual(spot_to_tariff(interval_time, 'Ausgrid', 'EA116', 100, 1, 1), 12.491, 2)
         interval_time = datetime.strptime('2024-07-05 14:00+10:00', '%Y-%m-%d %H:%M%z')
         self.assertAlmostEqual(spot_to_tariff(interval_time, 'Ausgrid', 'EA116', 200, 1, 1), 22.645, 2)
+        # Demand estimate
+        interval_time = datetime.strptime('2024-07-05 18:00+11:00', '%Y-%m-%d %H:%M%z')
+        self.assertAlmostEqual(estimate_demand_fee(interval_time, 'Ausgrid', 'EA025', 5.5), 0.0, 2)
+        self.assertAlmostEqual(estimate_demand_fee(interval_time, 'Ausgrid', 'EA116', 5.5), 49.489, 2)
+
+    def test_essential_demand_fee(self):
+        # Demand estimate
+        interval_time = datetime.strptime('2024-07-05 18:00+10:00', '%Y-%m-%d %H:%M%z')
+        self.assertAlmostEqual(estimate_demand_fee(interval_time, 'Essential', 'BLNRSS2', 5.5), 0.0, 2)
+        self.assertAlmostEqual(estimate_demand_fee(interval_time, 'Essential', 'Other', 5.5), 49.489, 2)
+
+    def test_endeavour_demand_fee(self):
+        # Demand estimate
+        interval_time = datetime.strptime('2024-07-05 18:00+10:00', '%Y-%m-%d %H:%M%z')
+        self.assertAlmostEqual(estimate_demand_fee(interval_time, 'Endeavour', 'N71', 5.5), 0.0, 2)
+        self.assertAlmostEqual(estimate_demand_fee(interval_time, 'Endeavour', 'N73', 5.5), 29.92, 2)
 
     def test_energex_daily_fee(self):
         self.assertAlmostEqual(get_daily_fee('Energex', '3900'), 0.556, 3)
@@ -96,7 +112,7 @@ class TestTariffConversions(unittest.TestCase):
 
     def test_ausgrid_demand_fee(self):
         # Placeholder test - update when Ausgrid is implemented
-        self.assertAlmostEqual(calculate_demand_fee('Ausgrid', 'EA116', 5.5, 31), 56.76, 1)
+        self.assertAlmostEqual(calculate_demand_fee('Ausgrid', 'EA116', 5.5, 31), 49.489, 1)
 
     def test_evoenergy_daily_fee(self):
         # Placeholder test - update when Evoenergy is implemented
@@ -109,6 +125,10 @@ class TestTariffConversions(unittest.TestCase):
     def test_sapn_daily_fee(self):
         self.assertAlmostEqual(get_daily_fee('SAPN', 'RTOU'), 64.4, 4)
         self.assertAlmostEqual(get_daily_fee('SAPN', 'SBTOU'), 72.59, 4)
+        # Demand estimate
+        interval_time = datetime.strptime('2024-07-05 18:00+10:00', '%Y-%m-%d %H:%M%z')
+        self.assertAlmostEqual(estimate_demand_fee(interval_time, 'SAPN', 'SBTOU', 5.5), 0.0, 2)
+        self.assertAlmostEqual(estimate_demand_fee(interval_time, 'SAPN', 'RTOU', 5.5), 458.645, 2)
 
     def test_evo_battery_trial(self):
         interval_time = datetime.strptime('2024-07-05 14:00+10:00', '%Y-%m-%d %H:%M%z')

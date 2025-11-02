@@ -42,7 +42,7 @@ class TestAusgrid(unittest.TestCase):
 
     def test_ea_305_demand(self):
         tariff_code = 'EA305'
-        expected_price = 2655.66
+        expected_price = 1611.0919
         price = calculate_demand_fee(tariff_code, 179.05, 30)
         self.assertAlmostEqual(price, expected_price, places=1)
 

@@ -1,6 +1,8 @@
 from datetime import time, datetime
 from zoneinfo import ZoneInfo
 
+from aemo_to_tariff.energex import translate_tariff
+
 def time_zone():
     return 'Australia/Sydney'
 
@@ -66,18 +68,11 @@ tariffs = {
 }
 
 demand_tariffs = {
-    'EA116': {
-        'name': 'Residential Demand',
-        'periods': [
-            ('Peak', time(15, 0), time(22, 59), 33.2942),  # ¢/kW/day
-        ]
-    },
-    'EA305': {
-        'name': 'Small Business LV Demand',
-        'periods': [
-            ('Peak', time(15, 0), time(22, 59), 49.4399),  # ¢/kW/day
-        ]
-    }
+    'EA025': None,
+    'EA225': None,
+    'EA116': { 'peak': 8.998},
+    'EA305': { 'peak': 8.998},
+    'EA305': { 'peak': 8.998}
 }
 
 daily_fixed_charges = {
@@ -151,24 +146,25 @@ def estimate_demand_fee(interval_time: datetime, tariff_code: str, demand_kw: fl
     """
     time_of_day = interval_time.astimezone(ZoneInfo(time_zone())).time()
     
-    if tariff_code not in demand_tariffs:
+    charge = demand_tariffs['EA116']
+    if tariff_code in demand_tariffs:
+        charge = demand_tariffs[tariff_code]
+    if charge is None:
         return 0.0  # Return 0 if the tariff doesn't have a demand charge
-
-    charge = demand_tariffs[tariff_code]
     if isinstance(charge, dict):
         # Determine the time period
-        if 'Peak' in charge and time(17, 0) <= time_of_day < time(20, 0):
-            charge_per_kw_per_month = charge['Peak']
-        elif 'Off-Peak' in charge and time(11, 0) <= time_of_day < time(13, 0):
-            charge_per_kw_per_month = charge['Off-Peak']
+        if 'peak' in charge and time(17, 0) <= time_of_day < time(20, 0):
+            charge_per_kw_per_month = charge['peak']
+        elif 'off-peak' in charge and time(11, 0) <= time_of_day < time(13, 0):
+            charge_per_kw_per_month = charge['off-peak']
         else:
-            charge_per_kw_per_month = charge.get('Shoulder', 0.0)
+            charge_per_kw_per_month = charge.get('shoulder', 0.0)
     else:
         charge_per_kw_per_month = charge
 
     return charge_per_kw_per_month * demand_kw
 
-def calculate_demand_fee(tariff_code: str, demand_kw: float, days: int = 30):
+def calculate_demand_fee(tariff_code: str, demand_kw: float, days: int = 30, tou='Peak'):
     """
     Calculate the demand fee for a given tariff code, demand amount, and time period.
 
@@ -180,16 +176,23 @@ def calculate_demand_fee(tariff_code: str, demand_kw: float, days: int = 30):
     Returns:
     - float: The demand fee in dollars.
     """
-    tariff = demand_tariffs.get(tariff_code)
-    if not tariff:
-        raise ValueError(f"Unknown tariff code: {tariff_code}")
+    tariff_code = translate_tariff(str(tariff_code))
 
-    fee = 0.0
-    for period_name, start, end, rate in tariff['periods']:
-        if period_name == 'Peak':
-            fee += rate * demand_kw * days / 100  # Convert ¢/kW/day to $/kW/day
+    charge = demand_tariffs['EA116']
+    if tariff_code in demand_tariffs:
+        charge = demand_tariffs[tariff_code]
+    if charge is None:
+        return 0.0  # Return 0 if the tariff doesn't have a demand charge
+    if isinstance(charge, dict):
+        charge_per_kw_per_month = charge.get(tou.lower(), 0.0)
+    else:
+        charge_per_kw_per_month = charge
 
-    return fee
+    # Convert the charge to a daily rate and then calculate for the given number of days
+    daily_rate = charge_per_kw_per_month / days
+    total_charge = demand_kw * daily_rate * days
+
+    return total_charge
 
 def get_daily_fee(tariff_code: str, annual_usage: float = None):
     """

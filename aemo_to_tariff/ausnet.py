@@ -25,7 +25,12 @@ daily_fees = {
 
 # Optional demand charges if needed
 demand_charges = {
-    # 'NAST11D': 30.00  # Example if a demand-based tariff exists
+    'NAST11D': {
+        'name': 'Residential Demand',
+        'periods': [
+            ('Peak', time(15, 0), time(22, 59), 33.2942),  # ¢/kW/day
+        ]
+    },
 }
 
 def get_periods(tariff_code: str):
@@ -69,10 +74,12 @@ def estimate_demand_fee(interval_time: datetime, tariff_code: str, demand_kw: fl
     - float: The estimated demand fee in dollars.
     """
     time_of_day = interval_time.astimezone(ZoneInfo(time_zone())).time()
-    
-    if tariff_code not in demand_charges:
-        return 0.0  # Return 0 if the tariff doesn't have a demand charge
 
+    charge = demand_charges['NAST11D']
+    if tariff_code in demand_charges:
+        charge = demand_charges[tariff_code]
+    if charge is None:
+        return 0.0  # Return 0 if the tariff doesn't have a demand charge
     charge = demand_charges[tariff_code]
     if isinstance(charge, dict):
         # Determine the time period

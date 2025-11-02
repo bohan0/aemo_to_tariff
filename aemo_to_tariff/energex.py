@@ -195,6 +195,9 @@ demand_charges = {
     '3900': { 'Peak': 5.127},  # Residential Transitional Demand
     '3600': { 'Peak': 10.289},  # Small Business Demand
     '3800': { 'Peak': 4.975},  # Small Business Transitional Demand
+    '6900': None,  # Residential Time of Use Energy
+    '8900': None,  # Small 8900 TOU
+    '8800': None,  # Small 8800 TOU
     '7200': {
         'Off-Peak': 0.000,    # 11:00 to 13:00
         'Peak': 14.919,       # 17:00 to 20:00
@@ -248,10 +251,11 @@ def estimate_demand_fee(interval_time: datetime, tariff_code: str, demand_kw: fl
     tariff_code = translate_tariff(str(tariff_code))
     time_of_day = interval_time.astimezone(ZoneInfo(time_zone())).time()
     
-    if tariff_code not in demand_charges:
+    charge = demand_charges['3700']
+    if tariff_code in demand_charges:
+        charge = demand_charges[tariff_code]
+    if charge is None:
         return 0.0  # Return 0 if the tariff doesn't have a demand charge
-
-    charge = demand_charges[tariff_code]
     if isinstance(charge, dict):
         # Determine the time period
         if 'Peak' in charge and time(17, 0) <= time_of_day < time(20, 0):
