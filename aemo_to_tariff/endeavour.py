@@ -96,6 +96,11 @@ demand_charges = {
     'N19': {
         'Peak': 5.4400,  # $/kW/day
         'Off-Peak': 3.6458  # $/kW/day
+    },
+    'N73': {
+        'Peak': 5.4400,  # $/kW/day
+        'Off-Peak': 0.0,  # $/kW/day
+        'Shoulder': 3.6458  # $/kW/day
     }
 }
 
