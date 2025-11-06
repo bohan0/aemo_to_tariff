@@ -27,7 +27,7 @@ feed_in_tariffs = {
     'RESELE': {
         'name': 'Residential Electrify',
         'periods': [
-            ('Peak', time(17, 0), time(21, 0), 5.5),
+            ('Peak', time(17, 0), time(21, 0), 12.25),
             ('Off-peak', time(21, 0), time(10, 0), 0),
             ('Off-peak', time(16, 0), time(17, 0), 0),
             ('Solar Sponge', time(10, 0), time(16, 0), -1)
@@ -36,7 +36,7 @@ feed_in_tariffs = {
     'RESELEX': {
         'name': 'Residential Electrify',
         'periods': [
-            ('Peak', time(17, 0), time(21, 0), 5.5),
+            ('Peak', time(17, 0), time(21, 0), 12.25),
             ('Off-peak', time(21, 0), time(10, 0), 0),
             ('Off-peak', time(16, 0), time(17, 0), 0),
             ('Solar Sponge', time(10, 0), time(16, 0), -1)
@@ -45,7 +45,7 @@ feed_in_tariffs = {
     'RELE2W': {
         'name': 'Residential Electrify',
         'periods': [
-            ('Peak', time(17, 0), time(21, 0), 5.5),
+            ('Peak', time(17, 0), time(21, 0), 12.25),
             ('Off-peak', time(21, 0), time(10, 0), 0),
             ('Off-peak', time(16, 0), time(17, 0), 0),
             ('Solar Sponge', time(10, 0), time(16, 0), -1)
