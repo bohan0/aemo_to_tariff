@@ -150,3 +150,51 @@ class TestSAPower(unittest.TestCase):
             price = sapower.convert(interval_time, 'SBTOU', rrp) * 1.1
             msg = f"Time: {interval_time}, RRP: {rrp}, Price: {price}, Expected: {expected_price}"
             self.assertAlmostEqual((price), (expected_price), places=0, msg=msg)
+
+    # Added SBELE tariff
+    # time      RRP Quality	Export (kWh)	Earnings	Import (kWh)	
+    def test_sbele_tariff(self):
+        
+        # 00:10 $112	Act	0 x 12.06¢	0.00¢	0.012 x 25.75¢
+        interval_time = datetime(2025, 11, 11, 0, 10, tzinfo=ZoneInfo('Australia/Adelaide'))
+        tariff_code = 'SBELE'
+        rrp = 112.0
+        expected_buy_price = 25.75
+        price = sapower.convert(interval_time, tariff_code, rrp)
+        loss_factor = expected_buy_price / price
+        msg = f"Price: {price}, Expected: {expected_buy_price}, Loss Factor: {loss_factor}"
+        self.assertAlmostEqual(price * 0.883, expected_buy_price, places=1, msg=msg)
+        
+        expected_sell_price = 12.06
+        sell_price = sapower.convert_feed_in_tariff(interval_time, tariff_code, rrp)
+        loss_factor = expected_sell_price / sell_price
+        msg = f"Sell Price: {sell_price}, Expected: {expected_sell_price}, Loss Factor: {loss_factor}"
+        self.assertAlmostEqual(sell_price * 1.077, expected_sell_price, places=1, msg=msg)
+        
+        # 12:40	$-24	Act	0 x -3.69¢	0.00¢	1.242 x 9.63¢
+        interval_time = datetime(2025, 11, 11, 12, 40, tzinfo=ZoneInfo('Australia/Adelaide'))
+        rrp = -24.0
+        expected_buy_price = 9.63
+        price = sapower.convert(interval_time, tariff_code, rrp)
+        loss_factor = expected_buy_price / price
+        msg = f"Price: {price}, Expected: {expected_buy_price}, Loss Factor: {loss_factor}"
+        self.assertAlmostEqual(price * 1.225, expected_buy_price, places=1, msg=msg)
+        expected_sell_price = -3.69
+        sell_price = sapower.convert_feed_in_tariff(interval_time, tariff_code, rrp)
+        loss_factor = expected_sell_price / sell_price
+        msg = f"Sell Price: {sell_price}, Expected: {expected_sell_price}, Loss Factor: {loss_factor}"
+        self.assertAlmostEqual(sell_price * 1.085, expected_sell_price, places=1, msg=msg)
+        
+        # 20:05 $131	Act	0.366 x 26.42¢	967.05¢	0 x 55.10¢
+        interval_time = datetime(2025, 11, 11, 20, 5, tzinfo=ZoneInfo('Australia/Adelaide'))
+        rrp = 131.0
+        expected_buy_price = 55.10
+        price = sapower.convert(interval_time, tariff_code, rrp)
+        loss_factor = expected_buy_price / price
+        msg = f"Price: {price}, Expected: {expected_buy_price}, Loss Factor: {loss_factor}"
+        self.assertAlmostEqual(price * 1.15, expected_buy_price, places=1, msg=msg)
+        expected_sell_price = 26.42
+        sell_price = sapower.convert_feed_in_tariff(interval_time, tariff_code, rrp)
+        loss_factor = expected_sell_price / sell_price
+        msg = f"Sell Price: {sell_price}, Expected: {expected_sell_price}, Loss Factor: {loss_factor}"
+        self.assertAlmostEqual(sell_price * 1.042, expected_sell_price, places=1, msg=msg)
