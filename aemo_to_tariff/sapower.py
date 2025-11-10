@@ -51,6 +51,24 @@ feed_in_tariffs = {
             ('Solar Sponge', time(10, 0), time(16, 0), -1)
         ]
     },
+    'SBELE': {
+        'name': 'Residential Electrify',
+        'periods': [
+            ('Peak', time(17, 0), time(21, 0), 12.25),
+            ('Off-peak', time(21, 0), time(10, 0), 0),
+            ('Off-peak', time(16, 0), time(17, 0), 0),
+            ('Solar Sponge', time(10, 0), time(16, 0), -1)
+        ]
+    },
+    'SBELEX': {
+        'name': 'Residential Electrify',
+        'periods': [
+            ('Peak', time(17, 0), time(21, 0), 12.25),
+            ('Off-peak', time(21, 0), time(10, 0), 0),
+            ('Off-peak', time(16, 0), time(17, 0), 0),
+            ('Solar Sponge', time(10, 0), time(16, 0), -1)
+        ]
+    },
     'B2R': {
         'name': 'Business Two Rate',
         'periods': [
@@ -118,6 +136,15 @@ tariffs = {
             ('Shoulder', time(16, 0), time(17, 0), None, 9.49),
             ('Shoulder', time(21, 0), time(10, 0), None, 9.49),
             ('Solar Sponge', time(10, 0), time(16, 0), None, 2.84)
+        ]
+    },
+    'SBELE': {
+        'name': 'Residential Electrify',
+        'periods': [
+            ('Peak', time(17, 0), time(21, 0), None, 34.83),
+            ('Shoulder', time(16, 0), time(17, 0), None, 17.96),
+            ('Shoulder', time(21, 0), time(10, 0), None, 17.96),
+            ('Solar Sponge', time(10, 0), time(16, 0), None, 10.26)
         ]
     },
     'B2R': { # 0.2065 0.1032 $ 0.0726 
