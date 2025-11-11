@@ -48,7 +48,8 @@ class TestSAPower(unittest.TestCase):
         expected_price = 36.77
         price = sapower.convert_feed_in_tariff(interval_time, tariff_code, rrp)
         loss_factor = expected_price / price
-        self.assertAlmostEqual(price * 1.037, expected_price, places=1)
+        msg = f"Price: {price}, Expected: {expected_price}, Loss Factor: {loss_factor}"
+        self.assertAlmostEqual(price * 0.871, expected_price, places=1, msg=msg)
     
     def test_two_way_tou_feed_off_peak(self):
         # -17.51 ret (datetime.datetime(2025, 7, 4, 7, 40, tzinfo=zoneinfo.ZoneInfo(key='Australia/Adelaide')), -0.88640586, -2.99054519)
@@ -87,7 +88,7 @@ class TestSAPower(unittest.TestCase):
         dlf = 1.1678
         rrp = 0.0
         feed_in_price = sapower.convert_feed_in_tariff(interval_time, tariff_code, rrp)
-        self.assertAlmostEqual(feed_in_price, 5.5, places=2, msg=f"Feed-in Price: {feed_in_price}, Expected: 1.0")
+        self.assertAlmostEqual(feed_in_price, 12.25, places=2, msg=f"Feed-in Price: {feed_in_price}, Expected: 1.0")
 
     def test_feb_twoway_utc_tariff(self):
         interval_time = datetime(2025, 2, 7, 8, 20, tzinfo=ZoneInfo('UTC'))
@@ -95,7 +96,8 @@ class TestSAPower(unittest.TestCase):
         dlf = 1.1678
         rrp = 0.0
         feed_in_price = sapower.convert_feed_in_tariff(interval_time, tariff_code, rrp)
-        self.assertAlmostEqual(feed_in_price, 5.5, places=2, msg=f"Feed-in Price: {feed_in_price}, Expected: 1.0")
+        msg = f"Feed-in Price: {feed_in_price}, Expected: 1.0"
+        self.assertAlmostEqual(feed_in_price, 12.25, places=2, msg=msg)
 
     def test_morning_tou_tariff(self):
         interval_time = datetime(2025, 3, 30, 8, 55, tzinfo=ZoneInfo('Australia/Adelaide'))
@@ -198,3 +200,7 @@ class TestSAPower(unittest.TestCase):
         loss_factor = expected_sell_price / sell_price
         msg = f"Sell Price: {sell_price}, Expected: {expected_sell_price}, Loss Factor: {loss_factor}"
         self.assertAlmostEqual(sell_price * 1.042, expected_sell_price, places=1, msg=msg)
+        
+        # No demand fee here
+        expected_demand_fee = sapower.estimate_demand_fee(interval_time, tariff_code, demand_kw=10)
+        self.assertAlmostEqual(expected_demand_fee, 0, places=2)

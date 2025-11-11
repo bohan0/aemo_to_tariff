@@ -190,6 +190,7 @@ daily_fees = {
 demand_charges = {
     'RESELE': None,
     'RELE2W': None,
+    'SBELE': None,
     'SBTOU': None,
     'SBTOUNE': None,
     'RPRO': 83.39,  # $/kW/day
