@@ -33,7 +33,7 @@ tariffs = {
         ]
     },
     'N71': {
-        'name': 'Residential Seasonal TOU',
+        'name': 'Residential Seasonal TOU', # 21.7964 13.8419 3.4252 10.4931
         'periods': [
             ('High-season Peak', time(16, 0), time(20, 0), 21.7964),
             ('Low-season Peak', time(16, 0), time(20, 0),  13.8419),
@@ -215,6 +215,25 @@ def convert_feed_in_tariff(interval_datetime: datetime, tariff_code: str, rrp: f
     - float: The price in c/kWh.
     """
     rrp_c_kwh = rrp / 10
+    
+    if tariff_code in feed_in_tariffs:
+        interval_time = interval_datetime.astimezone(ZoneInfo(time_zone())).time()
+        tariff = feed_in_tariffs[tariff_code]
+        current_month = interval_datetime.month
+        is_high_season = current_month in tariff['peak_months']
+
+        for period, start, end, rate in tariff['periods']:
+            if start <= interval_time < end:
+                if 'high' in period.lower() and is_high_season:
+                    total_price = rrp_c_kwh +  rate
+                    return total_price
+                elif 'low' in period.lower() and not is_high_season:
+                    total_price = rrp_c_kwh + rate
+                    return total_price
+                elif 'off' in period.lower():
+                    total_price = rrp_c_kwh + rate
+                    return total_price
+    
     
     return rrp_c_kwh
 
