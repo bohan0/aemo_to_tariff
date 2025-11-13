@@ -1,7 +1,6 @@
 # aemo_to_tariff/evoenergy.py
-from datetime import datetime
+from datetime import time, datetime, timedelta
 from zoneinfo import ZoneInfo
-from datetime import time
 
 def time_zone():
     return 'Australia/ACT'
@@ -192,6 +191,7 @@ def convert(interval_datetime: datetime, tariff_code: str, rrp: float):
     Returns:
     - float: The price in c/kWh.
     """
+    interval_datetime = interval_datetime - timedelta(minutes=5)
     interval_time = interval_datetime.astimezone(ZoneInfo(time_zone())).time()
     current_month = interval_datetime.month
 
@@ -231,6 +231,7 @@ def convert_feed_in_tariff(interval_datetime: datetime, tariff_code: str, rrp: f
     Returns:
     - float: The total feed-in price in c/kWh.
     """
+    interval_datetime = interval_datetime - timedelta(minutes=5)
     interval_time = interval_datetime.astimezone(ZoneInfo(time_zone())).time()
     rrp_c_kwh = rrp / 10
 

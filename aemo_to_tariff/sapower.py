@@ -1,5 +1,5 @@
 # aemo_to_tariff/sapower.py
-from datetime import time, datetime
+from datetime import time, datetime, timedelta
 from zoneinfo import ZoneInfo
 
 def time_zone():
@@ -217,6 +217,7 @@ def convert_feed_in_tariff(interval_datetime: datetime, tariff_code: str, rrp: f
     Returns:
     - float: The price in c/kWh.
     """
+    interval_datetime = interval_datetime - timedelta(minutes=5)
     interval_time = interval_datetime.astimezone(ZoneInfo(time_zone())).time()
     rrp_c_kwh = rrp / 10
 
@@ -246,6 +247,7 @@ def convert(interval_datetime: datetime, tariff_code: str, rrp: float):
     Returns:
     - float: The price in c/kWh.
     """
+    interval_datetime = interval_datetime - timedelta(minutes=5)
     interval_time = interval_datetime.astimezone(ZoneInfo(time_zone())).time()
     print('Interval Time:', interval_datetime, '->', interval_time, 'Tariff Code:', tariff_code, 'RRP:', rrp)
     rrp_c_kwh = rrp / 10

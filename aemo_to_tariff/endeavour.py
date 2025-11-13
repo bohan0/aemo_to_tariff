@@ -1,4 +1,4 @@
-from datetime import time, datetime
+from datetime import time, datetime, timedelta
 from zoneinfo import ZoneInfo
 
 
@@ -215,6 +215,7 @@ def convert_feed_in_tariff(interval_datetime: datetime, tariff_code: str, rrp: f
     - float: The price in c/kWh.
     """
     rrp_c_kwh = rrp / 10
+    interval_datetime = interval_datetime - timedelta(minutes=5)
     
     if tariff_code in feed_in_tariffs:
         interval_time = interval_datetime.astimezone(ZoneInfo(time_zone())).time()
@@ -249,6 +250,7 @@ def convert(interval_datetime: datetime, tariff_code: str, rrp: float):
     Returns:
     - float: The price in c/kWh.
     """
+    interval_datetime = interval_datetime - timedelta(minutes=5)
     interval_time = interval_datetime.astimezone(ZoneInfo(time_zone())).time()
     rrp_c_kwh = rrp / 10
     tariff = tariffs[tariff_code]

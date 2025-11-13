@@ -55,7 +55,7 @@ class TestEndeavour(unittest.TestCase):
         self.assertAlmostEqual(price, expected_price, places=4)
 
     def test_convert_off_peak(self):
-        interval_time = datetime(2023, 7, 15, 10, 0, tzinfo=ZoneInfo(time_zone()))
+        interval_time = datetime(2023, 7, 15, 10, 5, tzinfo=ZoneInfo(time_zone()))
         tariff_code = 'N71'
         rrp = 100.0
         expected_price = 15.97

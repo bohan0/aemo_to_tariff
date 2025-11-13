@@ -1,5 +1,5 @@
 # aemo_to_tariff/energex.py
-from datetime import time, datetime
+from datetime import time, datetime, timedelta
 from zoneinfo import ZoneInfo
 
 def time_zone():
@@ -366,6 +366,7 @@ def convert(interval_datetime: datetime, tariff_code: str, rrp: float):
     Returns:
     - float: The price in c/kWh.
     """
+    interval_datetime = interval_datetime - timedelta(minutes=5)
     tariff_code = translate_tariff(str(tariff_code))
     interval_time = interval_datetime.astimezone(ZoneInfo(time_zone())).time()
     rrp_c_kwh = rrp / 10

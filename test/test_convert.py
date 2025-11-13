@@ -44,7 +44,7 @@ class TestTariffConversions(unittest.TestCase):
         self.assertAlmostEqual(spot_to_tariff(interval_time, 'Powercor', 'PRDS', -18.79, 1.058, 1.01), -2.08574, 1)
 
         # PRDS estimate
-        interval_time = datetime.strptime('2024-09-05 15:00+10:00', '%Y-%m-%d %H:%M%z')
+        interval_time = datetime.strptime('2024-09-05 15:05+10:00', '%Y-%m-%d %H:%M%z')
         expected_price = (17.95919 * 0.99) - 2.25 - 3.9606291203999966
         self.assertAlmostEqual(spot_to_tariff(interval_time, 'Powercor', 'PRDS', 42.53, 1.058, 1.00), expected_price, 2)
     
@@ -64,7 +64,7 @@ class TestTariffConversions(unittest.TestCase):
         self.assertAlmostEqual(spot_to_tariff(interval_time, 'Evoenergy', '017', 100, 1, 1), 13.7411, 2)
 
         # Peak
-        interval_time = datetime.strptime('2024-07-05 17:00+10:00', '%Y-%m-%d %H:%M%z')
+        interval_time = datetime.strptime('2024-07-05 17:05+10:00', '%Y-%m-%d %H:%M%z')
         self.assertAlmostEqual(spot_to_tariff(interval_time, 'Evoenergy', '017', 100, 1, 1), 27.9564, 2)
 
         # Shoulder

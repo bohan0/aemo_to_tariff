@@ -200,6 +200,17 @@ class TestSAPower(unittest.TestCase):
         loss_factor = expected_sell_price / sell_price
         msg = f"Sell Price: {sell_price}, Expected: {expected_sell_price}, Loss Factor: {loss_factor}"
         self.assertAlmostEqual(sell_price * 1.042, expected_sell_price, places=1, msg=msg)
+        # Now test end of interval which is actually 21:00
+        interval_time = datetime(2025, 11, 11, 21, 0, tzinfo=ZoneInfo('Australia/Adelaide'))
+        end_sell_price = sapower.convert_feed_in_tariff(interval_time, tariff_code, rrp)
+        self.assertAlmostEqual(sell_price, end_sell_price, places=2)
+        # No test start of interval which is actually 17:00
+        interval_time = datetime(2025, 11, 11, 17, 0, tzinfo=ZoneInfo('Australia/Adelaide'))
+        start_sell_price = sapower.convert_feed_in_tariff(interval_time, tariff_code, rrp)
+        self.assertNotEqual(sell_price, start_sell_price)
+        interval_time = datetime(2025, 11, 11, 17, 5, tzinfo=ZoneInfo('Australia/Adelaide'))
+        start_sell_price = sapower.convert_feed_in_tariff(interval_time, tariff_code, rrp)
+        self.assertAlmostEqual(sell_price, start_sell_price, places=2)
         
         # No demand fee here
         expected_demand_fee = sapower.estimate_demand_fee(interval_time, tariff_code, demand_kw=10)

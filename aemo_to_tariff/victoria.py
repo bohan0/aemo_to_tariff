@@ -1,5 +1,5 @@
 # aemo_to_tariff/victoria.py
-from datetime import time, datetime
+from datetime import time, datetime, timedelta
 from zoneinfo import ZoneInfo
 
 def time_zone():
@@ -177,6 +177,7 @@ def convert(interval_datetime: datetime, tariff_code: str, rrp: float):
     - float: The price in c/kWh.
     """
     # Convert local time
+    interval_datetime = interval_datetime - timedelta(minutes=5)
     local_time = interval_datetime.astimezone(ZoneInfo(time_zone())).time()
 
     # Convert $/MWh to c/kWh: 1 $/MWh = 0.1 c/kWh

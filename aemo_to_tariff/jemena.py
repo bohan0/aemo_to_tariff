@@ -1,5 +1,5 @@
 # aemo_to_tariff/jemena.py
-from datetime import datetime
+from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from datetime import time
 
@@ -102,6 +102,7 @@ def convert(interval_datetime: datetime, tariff_code: str, rrp: float):
     Returns:
     - float: The price in c/kWh.
     """
+    interval_datetime = interval_datetime - timedelta(minutes=5)
     interval_time = interval_datetime.astimezone(ZoneInfo(time_zone())).time()
 
     rrp_c_kwh = rrp / 10
