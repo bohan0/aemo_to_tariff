@@ -25,8 +25,8 @@ feed_in_tariffs = {
     'BLNREX2': {
         'name': 'LV Residential Solar Export',
         'periods': [
-            ('Peak', time(16, 0), time(20, 0), 11.5725),
-            ('Off Peak', time(0, 0), time(10, 0), -0.8172)
+            ('Peak', time(17, 0), time(19, 59), 11.5725 ),
+            ('Solar Soaker', time(10, 0), time(14, 59), -0.8172)
         ]
     },
     'BLNBEX1': {
@@ -86,8 +86,11 @@ tariffs = {
     'BLNRSS2': {
         'name': 'LV Residential Sun Soaker',
         'periods': [
-            ('Peak', time(15, 0), time(22, 0), 15.8671),
-            ('Off-Peak', time(22, 0), time(15, 0), 5.4026),
+            ('Peak', time(7, 0), time(9, 59), 16.9522 ),
+            ('Peak', time(15, 0), time(21, 59), 16.9522 ),
+            ('Off-Peak', time(0, 0), time(6, 59), 5.8530),
+            ('Off-Peak', time(10, 0), time(14, 59), 5.8530),
+            ('Off-Peak', time(22, 0), time(23, 59), 5.8530),
         ]
     },
 
@@ -204,16 +207,6 @@ tariffs = {
             ('Off-Peak', time(22, 0), time(7, 0), 5.1286),
         ]
     },
-# ------------------------------
-    # LV Residential ToU - Sun Soaker 
-    # ------------------------------
-    'BLNRSS2': {
-        'name': 'LV Residential ToU - Sun Soaker',
-        'periods': [
-            ('Peak', time(7, 0), time(9, 0), 16.9522),\
-            ('Off-Peak', time(22, 0), time(7, 0), 5.8530),
-        ]
-    },
 
     # -----------------------------------------------------
     # BLNBSS1 LV Small Business ToU - Sun Soaker 
@@ -253,15 +246,15 @@ def convert_feed_in_tariff(interval_datetime: datetime, tariff_code: str, rrp: f
     - float: The price in c/kWh.
     """
     interval_datetime = interval_datetime - timedelta(minutes=5)
-    interval_time = interval_datetime.astimezone(ZoneInfo(time_zone())).time()
+    local_time = interval_datetime.astimezone(ZoneInfo(time_zone())).time()
     rrp_c_kwh = rrp / 10
-    tariff = tariffs[tariff_code]
-    if tariff_code in feed_in_tariffs:
-        tariff = feed_in_tariffs[tariff_code]
-        for period, start, end, rate in tariff['periods']:
-            if start <= interval_time < end:
-                total_price = rrp_c_kwh + rate
-                return total_price
+    tariff = feed_in_tariffs.get(tariff_code, {})
+    if not tariff:
+        return rrp_c_kwh  # Fallback if unknown tariff code
+    for period, start, end, rate in tariff['periods']:
+        if start <= local_time < end:
+            total_price = rrp_c_kwh + rate
+            return total_price
     return rrp_c_kwh  # Fallback if no specific feed-in tariff found
 
 # Daily fees in dollars per day
@@ -298,22 +291,6 @@ def get_periods(tariff_code: str):
     if not tariff:
         raise ValueError(f"Unknown tariff code: {tariff_code}")
     return tariff['periods']
-
-def convert_feed_in_tariff(interval_datetime: datetime, tariff_code: str, rrp: float):
-    """
-    Convert RRP from $/MWh to c/kWh for SA Power Networks.
-
-    Parameters:
-    - interval_datetime (datetime): The interval datetime.
-    - tariff_code (str): The tariff code.
-    - rrp (float): The Regional Reference Price in $/MWh.
-
-    Returns:
-    - float: The price in c/kWh.
-    """
-    rrp_c_kwh = rrp / 10
-    
-    return rrp_c_kwh
 
 def convert(interval_datetime: datetime, tariff_code: str, rrp: float) -> float:
     """
