@@ -12,7 +12,7 @@ class TestEndeavour(unittest.TestCase):
         
     def test_convert_N71_n61_feed_in(self):
         # 17:15	$55	Act	0.692 x 17.19¢	1189.88¢	0 x 31.98¢
-        interval_time = datetime(2025, 11, 9, 17, 15, tzinfo=ZoneInfo(time_zone()))
+        interval_time = datetime(2025, 11, 10, 17, 15, tzinfo=ZoneInfo(time_zone()))
         tariff_code = 'N61'
         feed_in_price = convert_feed_in_tariff(interval_time, tariff_code, 55.0)
         msg = f"Feed-in price for {tariff_code} at {interval_time} should be approximately 17.19"
@@ -21,8 +21,18 @@ class TestEndeavour(unittest.TestCase):
         msg = f"Buyer price for {tariff_code} at {interval_time} should be approximately 31.98"
         self.assertAlmostEqual(buyer_price, 31.98 - 4.68, places=1, msg=msg)
         
+        # 17:15	$55	Act	0.692 x 17.19¢	1189.88¢	0 x 31.98¢
+        interval_time = datetime(2025, 11, 15, 17, 15, tzinfo=ZoneInfo(time_zone()))
+        tariff_code = 'N61'
+        feed_in_price = convert_feed_in_tariff(interval_time, tariff_code, 55.0)
+        msg = f"Feed-in price for {tariff_code} at {interval_time} should be approximately 5.5"
+        self.assertAlmostEqual(feed_in_price, 5.5, places=1, msg=msg)
+        buyer_price = convert(interval_time, 'N71', 55.0)
+        msg = f"Buyer price for {tariff_code} at {interval_time} should be approximately 31.98"
+        self.assertAlmostEqual(buyer_price, 31.98 - 4.68, places=1, msg=msg)
+        
         # 12:20	$-6	Act	0 x -0.67¢	0.00¢	0 x 4.55¢
-        interval_time = datetime(2025, 11, 9, 12, 20, tzinfo=ZoneInfo(time_zone()))
+        interval_time = datetime(2025, 11, 10, 12, 20, tzinfo=ZoneInfo(time_zone()))
         tariff_code = 'N61'
         feed_in_price = convert_feed_in_tariff(interval_time, tariff_code, -6.0)
         msg = f"Feed-in price for {tariff_code} at {interval_time} should be approximately -11.04"
@@ -32,7 +42,7 @@ class TestEndeavour(unittest.TestCase):
         self.assertAlmostEqual(buyer_price, 4.55 + 0.41, places=1, msg=msg)
         
         # 00:10	$121	Act	0 x 13.03¢	0.00¢	0 x 27.40¢
-        interval_time = datetime(2025, 11, 9, 0, 10, tzinfo=ZoneInfo(time_zone()))
+        interval_time = datetime(2025, 11, 10, 0, 10, tzinfo=ZoneInfo(time_zone()))
         tariff_code = 'N61'
         feed_in_price = convert_feed_in_tariff(interval_time, tariff_code, 121.0)
         msg = f"Feed-in price for {tariff_code} at {interval_time} should be approximately 0.00"

@@ -113,6 +113,7 @@ feed_in_tariffs = {
             ('Low-season Peak', time(16, 0), time(20, 0), 3.6837),
             ('Off Peak', time(0, 0), time(10, 0), -1.9690)
         ],
+        'weekdays': [0, 1, 2, 3, 4],
         'peak_months': [11, 12, 1, 2, 3, 6, 7, 8]  # November–March and June–August
     },
     'N95': {
@@ -222,6 +223,9 @@ def convert_feed_in_tariff(interval_datetime: datetime, tariff_code: str, rrp: f
         tariff = feed_in_tariffs[tariff_code]
         current_month = interval_datetime.month
         is_high_season = current_month in tariff['peak_months']
+        if 'weekdays' in tariff:
+            if interval_datetime.weekday() not in tariff['weekdays']:
+                return rrp_c_kwh
 
         for period, start, end, rate in tariff['periods']:
             if start <= interval_time < end:
