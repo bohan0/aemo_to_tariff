@@ -130,7 +130,7 @@ class TestTariffConversions(unittest.TestCase):
         # Demand estimate
         interval_time = datetime.strptime('2024-07-05 18:00+10:00', '%Y-%m-%d %H:%M%z')
         self.assertAlmostEqual(estimate_demand_fee(interval_time, 'SAPN', 'SBTOU', 5.5), 0.0, 2)
-        self.assertAlmostEqual(estimate_demand_fee(interval_time, 'SAPN', 'RTOU', 5.5), 458.645, 2)
+        self.assertAlmostEqual(estimate_demand_fee(interval_time, 'SAPN', 'RTOU', 5.5), 0, 2)
 
     def test_evo_battery_trial(self):
         interval_time = datetime.strptime('2024-07-05 14:00+10:00', '%Y-%m-%d %H:%M%z')

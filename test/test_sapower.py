@@ -70,6 +70,10 @@ class TestSAPower(unittest.TestCase):
         loss_factor = expected_price / price
         self.assertAlmostEqual(price * 1.02, expected_price, places=1, msg=f"Price: {price}, Expected: {expected_price}, Loss Factor: {loss_factor}")
 
+        # No demand fee here
+        expected_demand_fee = sapower.estimate_demand_fee(interval_time, tariff_code, demand_kw=10)
+        self.assertAlmostEqual(expected_demand_fee, 0, places=2)
+
     def test_morning_zero_twoway_tariff(self):
         interval_time = datetime(2025, 5, 7, 8, 20, tzinfo=ZoneInfo('Australia/Adelaide'))
         tariff_code = 'RELE2W'

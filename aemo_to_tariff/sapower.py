@@ -192,6 +192,7 @@ demand_charges = {
     'RELE2W': None,
     'SBELE': None,
     'SBTOU': None,
+    'RTOU': None,
     'SBTOUNE': None,
     'RPRO': 83.39,  # $/kW/day
     'SBTOUD': 8.42  # $/kW/day
