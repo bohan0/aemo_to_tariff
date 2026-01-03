@@ -251,7 +251,7 @@ def get_periods(network, tariff: str):
     if network == 'energex':
         return energex.get_periods(tariff)
     elif network == 'ausgrid':
-        return ergon.get_periods(tariff)
+        return ausgrid.get_periods(tariff)
     elif network == 'ergon':
         return ausgrid.get_periods(tariff)
     elif network == 'evoenergy':
