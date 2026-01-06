@@ -17,9 +17,37 @@ tariffs = {
     'URTOU': {
         'name': 'Residential TOU',
         'periods': [
-            ('Off-peak', time(0, 0), time(15, 0), 5.07),
-            ('Peak', time(15, 0), time(21, 0), 20.17),
-            ('Off-peak', time(21, 0), time(23, 59), 5.07),
+            ('Off-peak', time(0, 0), time(15, 0), 4.76),
+            ('Peak', time(15, 0), time(21, 0), 19.13),
+            ('Off-peak', time(21, 0), time(23, 59), 4.76),
+        ]
+    },
+    'FURTOU': {
+        'name': 'Residential TOU',
+        'periods': [
+            ('Off-peak', time(0, 0), time(15, 0), 4.76),
+            ('Peak', time(15, 0), time(21, 0), 19.13),
+            ('Off-peak', time(21, 0), time(23, 59), 4.76),
+        ]
+    },
+    'FURDS': {
+        'name': 'Residential TOU',
+        'periods': [
+            ('Off-peak', time(0, 0), time(15, 0), 6.71),
+            ('Solar-Soaker', time(10, 0), time(15, 0), 0.0),
+            ('Off-peak', time(15, 0), time(16, 0), 6.71),
+            ('Peak', time(16, 0), time(21, 0), 18.82),
+            ('Off-peak', time(21, 0), time(23, 59), 6.71),
+        ]
+    },
+    'URDS': {
+        'name': 'Residential TOU',
+        'periods': [
+            ('Off-peak', time(0, 0), time(15, 0), 6.71),
+            ('Solar-Soaker', time(10, 0), time(15, 0), 0.0),
+            ('Off-peak', time(15, 0), time(16, 0), 6.71),
+            ('Peak', time(16, 0), time(21, 0), 18.82),
+            ('Off-peak', time(21, 0), time(23, 59), 6.71),
         ]
     },
     'NDMO21': {
