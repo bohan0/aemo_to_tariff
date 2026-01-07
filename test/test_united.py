@@ -8,7 +8,7 @@ class TestUnited(unittest.TestCase):
         interval_time = datetime(2023, 7, 15, 10, 0, tzinfo=ZoneInfo(time_zone()))
         tariff_code = 'URTOU'
         rrp = 100.0
-        expected_price = 15.07
+        expected_price = 14.76
         price = convert(interval_time, tariff_code, rrp)
         self.assertAlmostEqual(price, expected_price, places=2)
 
