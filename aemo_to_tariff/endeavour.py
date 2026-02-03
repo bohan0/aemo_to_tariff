@@ -116,7 +116,7 @@ feed_in_tariffs = {
         'periods': [
             ('High-season Peak', time(16, 0), time(20, 0), 12.4336),  # inc GST - correct?
             ('Low-season Peak', time(16, 0), time(20, 0), 3.6837),  # inc GST - correct?
-            ('Off Peak', time(0, 0), time(10, 0), -1.9690)  # inc GST - correct?
+            ('Off Peak', time(10, 0), time(14, 0), -1.9690)  # inc GST - correct?
         ],
         'weekdays': [0, 1, 2, 3, 4],
         'peak_months': [11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  # November–March and April-October - see page 19
@@ -126,8 +126,9 @@ feed_in_tariffs = {
         'periods': [
             ('High-season Peak', time(16, 0), time(20, 0), 12.4336),  # inc GST - correct?
             ('Low-season Peak', time(16, 0), time(20, 0), 3.6837),  # inc GST - correct?
-            ('Off Peak', time(0, 0), time(10, 0), -1.9690)  # inc GST - correct?
+            ('Off Peak', time(10, 0), time(14, 0), -1.9690)  # inc GST - correct?
         ],
+        'weekdays': [0, 1, 2, 3, 4],
         'peak_months': [11, 12, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]  # November–March and April-October - see page 19
     }
 }
