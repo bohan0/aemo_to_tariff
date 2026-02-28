@@ -82,10 +82,11 @@ class TestEndeavour(unittest.TestCase):
         self.assertAlmostEqual(price, expected_price, places=4)
 
     def test_convert_N71_solar_soak_1pm(self):
+        # 2026-02-13 the RRP at 12:55 it was $46 so buy 4.91¢ and sell 10.51¢
         interval_time = datetime(2026, 2, 3, 13, 54, tzinfo=ZoneInfo(time_zone()))
         tariff_code = 'N71'
-        rrp = -34.25
-        expected_price = 0.0
+        rrp = 46
+        expected_price = 10.51
         price = convert(interval_time, tariff_code, rrp)
         self.assertAlmostEqual(price, expected_price, places=4)
 
